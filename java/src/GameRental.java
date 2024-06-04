@@ -354,6 +354,20 @@ public class GameRental {
     * Creates a new user
     **/
    public static void CreateUser(GameRental esql){
+      try {
+         System.out.print("\tEnter login name: ");
+         String login = in.readLine();
+
+         System.out.print("\tEnter password: ");
+         String password = in.readLine();
+
+         System.out.print("\tEnter phone number (just the 10 digits): ");
+         String phoneNum = in.readLine();
+
+         String query = "INSERT INTO Users VALUES ('" + login + "', '" + password + "', 'customer', NULL, '" + phoneNum + "', 0);";
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
    }//end CreateUser
 
 
