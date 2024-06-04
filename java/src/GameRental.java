@@ -352,7 +352,7 @@ public class GameRental {
 
    /*
     * Creates a new user
-    **/
+    */
    public static void CreateUser(GameRental esql){
       try {
          System.out.print("\tEnter login name: ");
@@ -365,6 +365,9 @@ public class GameRental {
          String phoneNum = in.readLine();
 
          String query = "INSERT INTO Users VALUES ('" + login + "', '" + password + "', 'customer', NULL, '" + phoneNum + "', 0);";
+
+         esql.executeUpdate(query);
+         System.out.println ("User created!");
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
@@ -376,6 +379,28 @@ public class GameRental {
     * @return User login or null is the user does not exist
     **/
    public static String LogIn(GameRental esql){
+      try {
+         System.out.print("\tEnter login name: ");
+         String login = in.readLine();
+
+         System.out.print("\tEnter password: ");
+         String password = in.readLine();
+
+         System.out.print("\tEnter phone number (just the 10 digits): ");
+         String phoneNum = in.readLine();
+
+         String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "' AND phoneNum = '" + phoneNum + "';";
+
+         int userExists = esql.executeQuery(query);
+         if (userExists > 0) {
+            return login;
+         }
+         else {
+            return null;
+         }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
       return null;
    }//end
 
