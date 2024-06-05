@@ -364,7 +364,7 @@ public class GameRental {
          System.out.print("\tEnter phone number (just the 10 digits): ");
          String phoneNum = in.readLine();
 
-         String query = "INSERT INTO Users VALUES ('" + login + "', '" + password + "', 'customer', NULL, '" + phoneNum + "', 0);";
+         String query = "INSERT INTO Users(login, password, role, phoneNum) VALUES ('" + login + "', '" + password + "', 'customer', '" + phoneNum + "');";
 
          esql.executeUpdate(query);
          System.out.println ("User created!");
@@ -406,7 +406,21 @@ public class GameRental {
 
 // Rest of the functions definition go in here
 
-   public static void viewProfile(GameRental esql) {}
+   public static void viewProfile(GameRental esql) {
+      try{
+         System.out.print("\tPlease re-enter your login name:");
+         String login = in.readLine();
+
+         System.out.print("\tPlease re-enter your password:");
+         String password = in.readLine();
+
+         String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "';";
+
+         esql.executeQueryAndPrintResult(query);
+      }catch(Exception e){
+        System.err.println (e.getMessage ());
+      }
+   }
    public static void updateProfile(GameRental esql) {}
    public static void viewCatalog(GameRental esql) {}
    public static void placeOrder(GameRental esql) {}
