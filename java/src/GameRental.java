@@ -343,8 +343,8 @@ public class GameRental {
                 System.out.println("|-----------------------------------|");
                 System.out.println("|-----------------------------------|");
                 switch (readChoice()){
-                   case 1: viewProfile(esql); break;
-                   case 2: updateProfile(esql); break;
+                   case 1: viewProfile(esql, authorisedUser); break;
+                   case 2: updateProfile(esql, authorisedUser); break;
                    case 3: viewCatalog(esql); break;
                    case 4: placeOrder(esql); break;
                    case 5: viewAllOrders(esql); break;
@@ -477,21 +477,97 @@ public class GameRental {
 
 // Rest of the functions definition go in here
 
-   public static void viewProfile(GameRental esql) {
+   public static void viewProfile(GameRental esql, String authorisedUser) {
       try{
-         System.out.print("\tPlease re-enter your login name:");
-         String login = in.readLine();
-
-         System.out.print("\tPlease re-enter your password:");
-         String password = in.readLine();
-
-         String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "';";
+         String login = authorisedUser;
+         String query = "SELECT * FROM Users WHERE login = '" + login + "';";
 
          esql.executeQueryAndPrintResult(query);
       }catch(Exception e){
         System.err.println (e.getMessage ());
       }
    }
+   public static void updateProfile(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("*************************");
+         System.out.println("1. Update password");
+         System.out.println("2. Update phone number");
+         System.out.println("3. Update favorite games");
+         System.out.println("Please make your choice: ");
+         switch(readChoice()) {
+            case 1: updatePassword(esql, authorisedUser); break;
+            case 2: updatePhoneNum(esql, authorisedUser); break;
+            case 3: updateFavGame(esql, authorisedUser); break;
+         }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static String getPass(GameRental esql, String authorisedUser) {
+      try {
+         String query = "SELECT password FROM Users WHERE login = '" + authorisedUser + "';";
+         int correct = esql.executeQueryAndPrintResult(query);
+         List<List<String>> currPass = esql.executeQueryAndReturnResult(query);
+         String correctPass = currPass.get(0).get(0);
+         return correctPass;
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+      return null;
+   }
+
+   public static void updatePassword(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("Enter current password before changing: ");
+         String password = in.readLine().trim();
+         String correctPassword = getPass(esql, authorisedUser);
+         correctPassword.trim();
+         while (!password.equals(correctPassword)) {
+            System.out.println("Wrong password input, press 1 to reenter password or 2 to go back");
+            System.out.println("1. reenter password");
+            System.out.println("2. Go back");
+            switch(readChoice()) {
+               case 1: 
+                  System.out.println("reenter password: ");
+                  password = in.readLine();
+                  break;
+               case 2:
+                  System.out.println("Going back . . . ");
+                  password = getPass(esql, authorisedUser);
+                  break;
+            }
+         }
+         System.out.println("Password is correct. Proceeding to update the password.");
+         System.out.println("Enter new password: ");
+         String newPassword = in.readLine();
+
+         String query = " UPDATE Users SET password = '" + newPassword + "' WHERE login = '" + authorisedUser + "';";
+         esql.executeUpdate(query);
+         System.out.println("Password update successful!");
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+      
+   }
+   public static void updatePhoneNum(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("Enter new phone number: ");
+         String newPhoneNum = in.readLine();
+
+         String query = "  UPDATE Users SET phoneNum = '" + newPhoneNum + "' WHERE login = '" + authorisedUser + "';";
+         esql.executeUpdate(query);
+
+         System.out.println("Phone number update successful!");
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void updateFavGame(GameRental esql, String authorisedUser) {
+      
+   }
+
    public static void updateProfile(GameRental esql) {
 
 
