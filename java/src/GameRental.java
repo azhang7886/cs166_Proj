@@ -515,7 +515,7 @@ public class GameRental {
          System.out.println("| 3.     Update favorite games      |");
          System.out.println("|                                   |");
          System.out.println("|-----------------------------------|");
-         System.out.println("|      Please make your choice:     |");
+         // System.out.println("|      Please make your choice:     |");
          switch(readChoice()) {
             case 1: updatePassword(esql, authorisedUser); break;
             case 2: updatePhoneNum(esql, authorisedUser); break;
@@ -570,7 +570,6 @@ public class GameRental {
                   System.out.println("|                  o                |");
                   System.out.println("|                  o                |");
                   System.out.println("=====================================");
-                  System.out.println("=====================================");
                   password = getPass(esql, authorisedUser);
                   break;
             }
@@ -585,6 +584,14 @@ public class GameRental {
          System.out.println("|                                   |");
          System.out.println("|          Password updated!        |");
          System.out.println("|                                   |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("|          Returning to Home        |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("=====================================");
          System.out.println("=====================================");
       }catch(Exception e){
          System.err.println (e.getMessage());
