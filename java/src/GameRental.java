@@ -352,8 +352,25 @@ public class GameRental {
 
    /*
     * Creates a new user
-    **/
+    */
    public static void CreateUser(GameRental esql){
+      try {
+         System.out.print("\tEnter login name: ");
+         String login = in.readLine();
+
+         System.out.print("\tEnter password: ");
+         String password = in.readLine();
+
+         System.out.print("\tEnter phone number (just the 10 digits): ");
+         String phoneNum = in.readLine();
+
+         String query = "INSERT INTO Users(login, password, role, phoneNum) VALUES ('" + login + "', '" + password + "', 'customer', '" + phoneNum + "');";
+
+         esql.executeUpdate(query);
+         System.out.println ("User created!");
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
    }//end CreateUser
 
 
@@ -362,12 +379,48 @@ public class GameRental {
     * @return User login or null is the user does not exist
     **/
    public static String LogIn(GameRental esql){
+      try {
+         System.out.print("\tEnter login name: ");
+         String login = in.readLine();
+
+         System.out.print("\tEnter password: ");
+         String password = in.readLine();
+
+         System.out.print("\tEnter phone number (just the 10 digits): ");
+         String phoneNum = in.readLine();
+
+         String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "' AND phoneNum = '" + phoneNum + "';";
+
+         int userExists = esql.executeQuery(query);
+         if (userExists > 0) {
+            return login;
+         }
+         else {
+            return null;
+         }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
       return null;
    }//end
 
 // Rest of the functions definition go in here
 
-   public static void viewProfile(GameRental esql) {}
+   public static void viewProfile(GameRental esql) {
+      try{
+         System.out.print("\tPlease re-enter your login name:");
+         String login = in.readLine();
+
+         System.out.print("\tPlease re-enter your password:");
+         String password = in.readLine();
+
+         String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "';";
+
+         esql.executeQueryAndPrintResult(query);
+      }catch(Exception e){
+        System.err.println (e.getMessage ());
+      }
+   }
    public static void updateProfile(GameRental esql) {}
    public static void viewCatalog(GameRental esql) {}
    public static void placeOrder(GameRental esql) {}
