@@ -10,7 +10,7 @@
  *
  */
 
-
+//JDBC is installed!
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -50,16 +50,31 @@ public class GameRental {
     * @throws java.sql.SQLException when failed to make a connection.
     */
    public GameRental(String dbname, String dbport, String user, String passwd) throws SQLException {
-
-      System.out.print("Connecting to database...");
+      System.out.println("==================================");
+      System.out.println("|                o               |");
+      System.out.println("|                o               |");
+      System.out.println("|                o               |");
+      System.out.println("|     Connecting to database     |");
+      System.out.println("|                o               |");
+      System.out.println("|                o               |");
+      System.out.println("|                o               |");
+      
       try{
          // constructs the connection URL
          String url = "jdbc:postgresql://localhost:" + dbport + "/" + dbname;
-         System.out.println ("Connection URL: " + url + "\n");
+         //System.out.println ("Connection URL: " + url + "\n");
 
          // obtain a physical connection
          this._connection = DriverManager.getConnection(url, user, passwd);
-         System.out.println("Done");
+         // System.out.println("|                o               |");
+         System.out.println("|Database Connection Successful! |");
+         System.out.println("|       Loading Main Menu        |");
+         System.out.println("|                o               |");
+         System.out.println("|                o               |");
+         System.out.println("|                o               |");
+         System.out.println("==================================");
+         System.out.println("|           Main Menu            |");
+         System.out.println("==================================");
       }catch (Exception e){
          System.err.println("Error - Unable to Connect to Database: " + e.getMessage() );
          System.out.println("Make sure you started postgres on this machine");
@@ -251,41 +266,82 @@ public class GameRental {
          boolean keepon = true;
          while(keepon) {
             // These are sample SQL statements
-            System.out.println("MAIN MENU");
-            System.out.println("---------");
-            System.out.println("1. Create user");
-            System.out.println("2. Log in");
-            System.out.println("9. < EXIT");
+            
+            System.out.println("====================================");
+            System.out.println("|    Type 1 to create an account.   |");
+            System.out.println("|                                   |");
+            System.out.println("|    Type 2 to login to account.    |");
+            System.out.println("|                                   |");
+            System.out.println("|    Type 9 to exit the app.        |");
+            System.out.println("====================================");
+            // System.out.println("1. Create an account!");
+            // System.out.println("2. Log in");
+            // System.out.println("9. < EXIT");
             String authorisedUser = null;
             switch (readChoice()){
                case 1: CreateUser(esql); break;
                case 2: authorisedUser = LogIn(esql); break;
                case 9: keepon = false; break;
-               default : System.out.println("Unrecognized choice!"); break;
+               default : System.out.println("|   Invalid selection! try again     |"); break;
             }//end switch
             if (authorisedUser != null) {
+              System.out.println("|                  o                |");
+              System.out.println("|                  o                |");
+              System.out.println("|                  o                |");
+              System.out.println("|           Successful Login!       |");
+              System.out.println("|           Loading Homepage        |");
+              System.out.println("|                  o                |");
+              System.out.println("|                  o                |");
+              System.out.println("|                  o                |");
               boolean usermenu = true;
               while(usermenu) {
-                System.out.println("MAIN MENU");
-                System.out.println("---------");
-                System.out.println("1. View Profile");
-                System.out.println("2. Update Profile");
-                System.out.println("3. View Catalog");
-                System.out.println("4. Place Rental Order");
-                System.out.println("5. View Full Rental Order History");
-                System.out.println("6. View Past 5 Rental Orders");
-                System.out.println("7. View Rental Order Information");
-                System.out.println("8. View Tracking Information");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|              MY HOME              |");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|                                   |");
+                System.out.println("|                                   |");
+                System.out.println("| 1.         View Profile           |");
+                System.out.println("|                                   |");
+                System.out.println("| 2.       Update Profile           |");
+                System.out.println("|                                   |");
+                System.out.println("| 3.        View Catalog            |");
+                System.out.println("|                                   |");
+                System.out.println("| 4.     Place Rental Order         |");
+                System.out.println("|                                   |");
+                System.out.println("| 5. View Full Rental Order History |");
+                System.out.println("|                                   |");
+                System.out.println("| 6. View Past 5 Rental Orders      |");
+                System.out.println("|                                   |");
+                System.out.println("| 7. View Rental Order Information  |");
+                System.out.println("|                                   |");
+                System.out.println("| 8. View Tracking Information      |");
+                System.out.println("|                                   |");
+                System.out.println("|                                   |");
 
                 //the following functionalities basically used by employees & managers
-                System.out.println("9. Update Tracking Information");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|  Employee and Managers Access*    |");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|                                   |");
+                System.out.println("| 9. Update Tracking Information    |");
+                System.out.println("|                                   |");
+                System.out.println("|-----------------------------------|");
 
                 //the following functionalities basically used by managers
-                System.out.println("10. Update Catalog");
-                System.out.println("11. Update User");
-
-                System.out.println(".........................");
-                System.out.println("20. Log out");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|         Managers Access*          |");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|                                   |");
+                System.out.println("|       10. Update Catalog          |");
+                System.out.println("|        11. Update User            |");
+                System.out.println("|                                   |");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|                                   |");
+                System.out.println("|            20. Log out            |");
+                System.out.println("|                                   |");
+                System.out.println("|-----------------------------------|");
+                System.out.println("|-----------------------------------|");
                 switch (readChoice()){
                    case 1: viewProfile(esql); break;
                    case 2: updateProfile(esql); break;
@@ -302,7 +358,8 @@ public class GameRental {
 
 
                    case 20: usermenu = false; break;
-                   default : System.out.println("Unrecognized choice!"); break;
+                   default : System.out.println("|    Invalid selection! try again   |"); break;
+                           
                 }
               }
             }
@@ -324,11 +381,18 @@ public class GameRental {
    }//end main
 
    public static void Greeting(){
-      System.out.println(
-         "\n\n*******************************************************\n" +
-         "              User Interface      	               \n" +
-         "*******************************************************\n");
-   }//end Greeting
+    System.out.println("*******************************************************");
+    System.out.println("*******************************************************");
+    System.out.println("|                                                     |");
+    System.out.println("|                  Game Rental Store                  |");
+    System.out.println("|                                                     |");
+    System.out.println("*******************************************************");
+    System.out.println("|                                                     |");
+    System.out.println("|        Welcome to our Game Rental Store App         |");
+    System.out.println("|              By Alex Zhang and Peter Lu             |");
+    System.out.println("|                                                     |");
+    System.out.println("*******************************************************");
+   }//end Greeting  
 
    /*
     * Reads the users choice given from the keyboard
@@ -338,12 +402,14 @@ public class GameRental {
       int input;
       // returns only if a correct value is given.
       do {
-         System.out.print("Please make your choice: ");
+         System.out.println("|                                   |");
+         System.out.println("|     Please make your choice:      |");
+         System.out.println("|                                   |");
          try { // read the integer, parse it and break.
             input = Integer.parseInt(in.readLine());
             break;
          }catch (Exception e) {
-            System.out.println("Your input is invalid!");
+            System.out.println("|    Invalid selection! try again   |");
             continue;
          }//end try
       }while (true);
@@ -354,24 +420,29 @@ public class GameRental {
     * Creates a new user
     */
    public static void CreateUser(GameRental esql){
-      try {
-         System.out.print("\tEnter login name: ");
-         String login = in.readLine();
+        try {
+            System.out.println("==================================");
+            System.out.println("|           Create User          |");
+            System.out.println("==================================");
+            
+            System.out.print("Enter login name: ");
+            String login = in.readLine();
 
-         System.out.print("\tEnter password: ");
-         String password = in.readLine();
+            System.out.print("Enter password: ");
+            String password = in.readLine();
 
-         System.out.print("\tEnter phone number (just the 10 digits): ");
-         String phoneNum = in.readLine();
+            System.out.print("Enter phone number (just the 10 digits): ");
+            String phoneNum = in.readLine();
 
-         String query = "INSERT INTO Users(login, password, role, phoneNum) VALUES ('" + login + "', '" + password + "', 'customer', '" + phoneNum + "');";
+            String query = "INSERT INTO Users(login, password, role, phoneNum) VALUES ('" + login + "', '" + password + "', 'customer', '" + phoneNum + "');";
 
-         esql.executeUpdate(query);
-         System.out.println ("User created!");
-      }catch(Exception e){
-         System.err.println (e.getMessage());
-      }
-   }//end CreateUser
+            esql.executeUpdate(query);
+            System.out.println("\nUser created successfully!");
+            System.out.println("==================================");
+        } catch(Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 
 
    /*
@@ -380,15 +451,15 @@ public class GameRental {
     **/
    public static String LogIn(GameRental esql){
       try {
-         System.out.print("\tEnter login name: ");
+         System.out.print("|   Enter login name: ");
          String login = in.readLine();
-
-         System.out.print("\tEnter password: ");
+         System.out.println("   |");
+         System.out.print("|   Enter password: ");
          String password = in.readLine();
-
-         System.out.print("\tEnter phone number (just the 10 digits): ");
+         System.out.println("   |");
+         System.out.print("|   Enter phone number (just the 10 digits): ");
          String phoneNum = in.readLine();
-
+         System.out.println("   |");
          String query = "SELECT * FROM Users WHERE login = '" + login + "' AND password =  '" + password + "' AND phoneNum = '" + phoneNum + "';";
 
          int userExists = esql.executeQuery(query);
@@ -421,7 +492,10 @@ public class GameRental {
         System.err.println (e.getMessage ());
       }
    }
-   public static void updateProfile(GameRental esql) {}
+   public static void updateProfile(GameRental esql) {
+
+
+   }
    public static void viewCatalog(GameRental esql) {}
    public static void placeOrder(GameRental esql) {}
    public static void viewAllOrders(GameRental esql) {}
