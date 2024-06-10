@@ -421,24 +421,36 @@ public class GameRental {
     */
    public static void CreateUser(GameRental esql){
         try {
-            System.out.println("==================================");
-            System.out.println("|           Create User          |");
-            System.out.println("==================================");
+            System.out.println("====================================");
+            System.out.println("|           Create User             |");
+            System.out.println("====================================");    
+            System.out.println("|                                   |");
+            System.out.println("|                                   |");
             
-            System.out.print("Enter login name: ");
+            System.out.print("|    Enter login name: ");
             String login = in.readLine();
-
-            System.out.print("Enter password: ");
+            System.out.print("   |");
+            System.out.print("|    Enter password: ");
             String password = in.readLine();
+            System.out.print("   |");
 
-            System.out.print("Enter phone number (just the 10 digits): ");
+            System.out.print("|    Enter phone number (just the 10 digits): ");
             String phoneNum = in.readLine();
+            System.out.print("   |");
 
             String query = "INSERT INTO Users(login, password, role, phoneNum) VALUES ('" + login + "', '" + password + "', 'customer', '" + phoneNum + "');";
 
             esql.executeUpdate(query);
-            System.out.println("\nUser created successfully!");
-            System.out.println("==================================");
+            System.out.println("|                  o                |");
+            System.out.println("|                  o                |");
+            System.out.println("|                  o                |");
+            System.out.println("|          Creating account         |");
+            System.out.println("|                  o                |");
+            System.out.println("|                  o                |");
+            System.out.println("|                  o                |");
+            System.out.println("|     User created successfully!    |");
+            System.out.println("|                                   |");
+            System.out.println("====================================="); 
         } catch(Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
@@ -489,11 +501,21 @@ public class GameRental {
    }
    public static void updateProfile(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("*************************");
-         System.out.println("1. Update password");
-         System.out.println("2. Update phone number");
-         System.out.println("3. Update favorite games");
-         System.out.println("Please make your choice: ");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("=====================================");
+         System.out.println("|         Update Your Profile       |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("| 1.       Update password          |");
+         System.out.println("|                                   |");
+         System.out.println("| 2.      Update phone number       |");
+         System.out.println("|                                   |");
+         System.out.println("| 3.     Update favorite games      |");
+         System.out.println("|                                   |");
+         System.out.println("|-----------------------------------|");
+         System.out.println("|      Please make your choice:     |");
          switch(readChoice()) {
             case 1: updatePassword(esql, authorisedUser); break;
             case 2: updatePhoneNum(esql, authorisedUser); break;
@@ -519,32 +541,51 @@ public class GameRental {
 
    public static void updatePassword(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("Enter current password before changing: ");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|     Enter current password:");
          String password = in.readLine().trim();
+         System.out.println("|");
          String correctPassword = getPass(esql, authorisedUser);
          correctPassword.trim();
          while (!password.equals(correctPassword)) {
-            System.out.println("Wrong password input, press 1 to reenter password or 2 to go back");
-            System.out.println("1. reenter password");
-            System.out.println("2. Go back");
+            System.out.println("=====================================");
+            System.out.println("|                                   |");
+            System.out.println("|           Wrong password          |");
+            System.out.println("|        1. reenter password        |");
+            System.out.println("|            2. Go back             |");
             switch(readChoice()) {
                case 1: 
-                  System.out.println("reenter password: ");
+                  System.out.println("|                                   |");
+                  System.out.println("           reenter password: ");
                   password = in.readLine();
+                  System.out.println("|                                   |");
                   break;
                case 2:
-                  System.out.println("Going back . . . ");
+                  System.out.println("|                  o                |");
+                  System.out.println("|                  o                |");
+                  System.out.println("|                  o                |");
+                  System.out.println("|             Going back            |");
+                  System.out.println("|                  o                |");
+                  System.out.println("|                  o                |");
+                  System.out.println("|                  o                |");
+                  System.out.println("=====================================");
+                  System.out.println("=====================================");
                   password = getPass(esql, authorisedUser);
                   break;
             }
          }
-         System.out.println("Password is correct. Proceeding to update the password.");
-         System.out.println("Enter new password: ");
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+         System.out.println("|         Enter new password:       |");
          String newPassword = in.readLine();
 
          String query = " UPDATE Users SET password = '" + newPassword + "' WHERE login = '" + authorisedUser + "';";
          esql.executeUpdate(query);
-         System.out.println("Password update successful!");
+         System.out.println("|                                   |");
+         System.out.println("|          Password updated!        |");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
@@ -552,13 +593,19 @@ public class GameRental {
    }
    public static void updatePhoneNum(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("Enter new phone number: ");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|      Enter new phone number:      |");
          String newPhoneNum = in.readLine();
+         System.out.println("   |");
 
          String query = "  UPDATE Users SET phoneNum = '" + newPhoneNum + "' WHERE login = '" + authorisedUser + "';";
          esql.executeUpdate(query);
 
-         System.out.println("Phone number update successful!");
+         System.out.println("|                                   |");
+         System.out.println("|  Phone number update successful!  |");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
