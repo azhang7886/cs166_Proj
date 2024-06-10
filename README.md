@@ -2,7 +2,7 @@
 
 Authors: Alex Zhang, Peter Lu
 
-Hello! Welcome to our cs166 project: A Gamestop database management system
+Hello! Welcome to our cs166 project: A Game Rental Store
 
 ----------------------------------------------------------------------
 To access the database please run in the following order
