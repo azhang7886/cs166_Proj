@@ -50,14 +50,14 @@ public class GameRental {
     * @throws java.sql.SQLException when failed to make a connection.
     */
    public GameRental(String dbname, String dbport, String user, String passwd) throws SQLException {
-      System.out.println("==================================");
-      System.out.println("|                o               |");
-      System.out.println("|                o               |");
-      System.out.println("|                o               |");
-      System.out.println("|     Connecting to database     |");
-      System.out.println("|                o               |");
-      System.out.println("|                o               |");
-      System.out.println("|                o               |");
+      System.out.println("====================================");
+      System.out.println("|                o                 |");
+      System.out.println("|                o                 |");
+      System.out.println("|                o                 |");
+      System.out.println("|     Connecting to database       |");
+      System.out.println("|                o                 |");
+      System.out.println("|                o                 |");
+      System.out.println("|                o                 |");
       
       try{
          // constructs the connection URL
@@ -67,14 +67,14 @@ public class GameRental {
          // obtain a physical connection
          this._connection = DriverManager.getConnection(url, user, passwd);
          // System.out.println("|                o               |");
-         System.out.println("|Database Connection Successful! |");
-         System.out.println("|       Loading Main Menu        |");
-         System.out.println("|                o               |");
-         System.out.println("|                o               |");
-         System.out.println("|                o               |");
-         System.out.println("==================================");
-         System.out.println("|           Main Menu            |");
-         System.out.println("==================================");
+         System.out.println("| Database Connection Successful!  |");
+         System.out.println("|        Loading Main Menu         |");
+         System.out.println("|                o                 |");
+         System.out.println("|                o                 |");
+         System.out.println("|                o                 |");
+         System.out.println("====================================");
+         System.out.println("|            Main Menu             |");
+         System.out.println("====================================");
       }catch (Exception e){
          System.err.println("Error - Unable to Connect to Database: " + e.getMessage() );
          System.out.println("Make sure you started postgres on this machine");
@@ -300,9 +300,9 @@ public class GameRental {
                 System.out.println("|-----------------------------------|");
                 System.out.println("|                                   |");
                 System.out.println("|                                   |");
-                System.out.println("| 1.         View Profile           |");
+                System.out.println("| 1.         My Profile             |");
                 System.out.println("|                                   |");
-                System.out.println("| 2.       Update Profile           |");
+                System.out.println("| 2.      Update My Profile         |");
                 System.out.println("|                                   |");
                 System.out.println("| 3.        View Catalog            |");
                 System.out.println("|                                   |");
@@ -490,15 +490,43 @@ public class GameRental {
 // Rest of the functions definition go in here
 
    public static void viewProfile(GameRental esql, String authorisedUser) {
-      try{
-         String login = authorisedUser;
-         String query = "SELECT * FROM Users WHERE login = '" + login + "';";
+    try {
+        String login = authorisedUser;
+        String query = "SELECT * FROM Users WHERE login = '" + login + "';";
 
-         esql.executeQueryAndPrintResult(query);
-      }catch(Exception e){
-        System.err.println (e.getMessage ());
-      }
+        // Execute the query and get the result
+        List<List<String>> result = esql.executeQueryAndReturnResult(query);
+
+        // Check if the result is empty
+        if (result.isEmpty()) {
+            System.out.println("No user found with login: " + login);
+            return;
+        }
+
+        // Assuming the Users table has columns in the order: login, password, role, favGames, phoneNum, numOverDueGames
+        List<String> user = result.get(0);
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|           Loading Profile         |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("====================================");
+        System.out.println("|              My Profile           |");
+        System.out.println("====================================");
+        System.out.println("| Login: " + user.get(0));
+        System.out.println("| Password: " + user.get(1));
+        System.out.println("| Role: " + user.get(2));
+        System.out.println("| Favorite Games: " + user.get(3));
+        System.out.println("| Phone Number: " + user.get(4));
+        System.out.println("| Number of Overdue Games: " + user.get(5));
+        System.out.println("====================================");
+    } catch (Exception e) {
+        System.err.println("Error: " + e.getMessage());
+    }
    }
+
    public static void updateProfile(GameRental esql, String authorisedUser) {
       try {
          System.out.println("|                  o                |");
@@ -619,13 +647,41 @@ public class GameRental {
    }
 
    public static void updateFavGame(GameRental esql, String authorisedUser) {
-      
+    try {
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("|      Current favorite games:      |");
+
+        String selectQuery = "SELECT favGames FROM Users WHERE login = '" + authorisedUser + "'";
+        Statement stmt = esql._connection.createStatement();
+        ResultSet rs = stmt.executeQuery(selectQuery);
+        rs.next(); 
+        String currentFavGames = rs.getString(1); 
+        
+        System.out.println("|   " + currentFavGames);
+        System.out.println("|                                   |");
+        System.out.println("|      Enter a favorite game:       |");
+        String newFavGame = in.readLine();
+        System.out.println("   |");
+
+        String updatedFavGames = currentFavGames + ", " + newFavGame;
+        String updateQuery = "UPDATE Users SET favGames = '" + updatedFavGames + "' WHERE login = '" + authorisedUser + "'";
+        esql.executeUpdate(updateQuery);
+
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|    Updated favorite games list    |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|                  o                |");
+        System.out.println("|          Returning to Home        |");
+        System.out.println("=====================================");
+    } catch (Exception e) {
+        System.err.println(e.getMessage());
+    }
    }
 
-   public static void updateProfile(GameRental esql) {
-
-
-   }
    public static void viewCatalog(GameRental esql) {}
    public static void placeOrder(GameRental esql) {}
    public static void viewAllOrders(GameRental esql) {}
