@@ -343,21 +343,104 @@ public class GameRental {
                 System.out.println("|-----------------------------------|");
                 System.out.println("|-----------------------------------|");
                 switch (readChoice()){
-                   case 1: viewProfile(esql, authorisedUser); break;
-                   case 2: updateProfile(esql, authorisedUser); break;
-                   case 3: viewCatalog(esql); break;
-                   case 4: placeOrder(esql); break;
-                   case 5: viewAllOrders(esql); break;
-                   case 6: viewRecentOrders(esql); break;
-                   case 7: viewOrderInfo(esql); break;
-                   case 8: viewTrackingInfo(esql); break;
-                   case 9: updateTrackingInfo(esql); break;
-                   case 10: updateCatalog(esql); break;
-                   case 11: updateUser(esql); break;
+                   case 1: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     viewProfile(esql, authorisedUser); 
+                     break;
+
+                   case 2: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     updateProfile(esql, authorisedUser); 
+                     break;
+
+                   case 3: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     viewCatalog(esql, authorisedUser); 
+                     break;
+
+                   case 4: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     placeOrder(esql); 
+                     break;
+
+                   case 5: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     viewAllOrders(esql); 
+                     break;
+
+                   case 6: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     viewRecentOrders(esql); 
+                     break;
+
+                   case 7:
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("====================================="); 
+                     viewOrderInfo(esql); 
+                     break;
+
+                   case 8: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     viewTrackingInfo(esql); 
+                     break;
+
+                   case 9: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     updateTrackingInfo(esql); 
+                     break;
+
+                   case 10: 
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     updateCatalog(esql); 
+                     break;
+
+                   case 11:
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("====================================="); 
+                     updateUser(esql); 
+                     break;
+
+                   case 20: 
+                     System.out.println("|            Logging Out            |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("|                 o                 |");
+                     System.out.println("=====================================");
+                     usermenu = false; 
+                     break;
 
 
-
-                   case 20: usermenu = false; break;
                    default : System.out.println("|    Invalid selection! try again   |"); break;
                            
                 }
@@ -505,13 +588,13 @@ public class GameRental {
 
         // Assuming the Users table has columns in the order: login, password, role, favGames, phoneNum, numOverDueGames
         List<String> user = result.get(0);
-        System.out.println("|                  o                |");
-        System.out.println("|                  o                |");
-        System.out.println("|                  o                |");
-        System.out.println("|           Loading Profile         |");
-        System.out.println("|                  o                |");
-        System.out.println("|                  o                |");
-        System.out.println("|                  o                |");
+        System.out.println("|                 o                |");
+        System.out.println("|                 o                |");
+        System.out.println("|                 o                |");
+        System.out.println("|          Loading Profile         |");
+        System.out.println("|                 o                |");
+        System.out.println("|                 o                |");
+        System.out.println("|                 o                |");
         System.out.println("====================================");
         System.out.println("|              My Profile           |");
         System.out.println("====================================");
@@ -682,7 +765,126 @@ public class GameRental {
     }
    }
 
-   public static void viewCatalog(GameRental esql) {}
+   public static void viewCatalog(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("|                  o                |");
+         System.out.println("=====================================");
+         System.out.println("|      Viewing Catalog Options      |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("| 1.       Search By Genre          |");
+         System.out.println("|                                   |");
+         System.out.println("| 2.      Search By Pricing         |");
+         System.out.println("|                                   |");
+         System.out.println("|-----------------------------------|");
+         
+         switch(readChoice()) {
+            case 1: searchByGenre(esql, authorisedUser); break;
+            case 2: searchByPrice(esql, authorisedUser); break;
+         }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void searchByGenre(GameRental esql, String authorisedUser) {
+    try {
+        boolean keepSearching = true;
+        while (keepSearching) {
+            System.out.println("=====================================");
+            System.out.println("|       Available Genres:           |");
+            String genreQuery = "SELECT DISTINCT genre FROM Catalog;";
+
+            List<List<String>> result1 = esql.executeQueryAndReturnResult(genreQuery);
+            for (List<String> row : result1) {
+                System.out.println("| " + row.get(0));
+            }
+
+            System.out.println("=====================================");
+            System.out.println("|           Enter a Genre:          |");
+
+            String genreType = in.readLine();
+            System.out.println("   |");
+
+            System.out.println("|  Games in the specified genre:    |");
+
+            // Fetch all games in the specified genre
+            String gamesInGenreQuery = "SELECT gameName FROM Catalog WHERE genre = '" + genreType + "';";
+            List<List<String>> result2 = esql.executeQueryAndReturnResult(gamesInGenreQuery);
+
+            System.out.println("=====================================");
+            if (result2.isEmpty()) {
+                System.out.println("|   No games found in the specified |");
+                System.out.println("|   genre.                          |");
+            } else {
+                System.out.println("|   Games in the specified genre:   |");
+                for (List<String> row : result2) {
+                    System.out.println("|   - " + row.get(0));
+                }
+            }
+            System.out.println("=====================================");
+
+            // Ask user if they want to search for another genre or quit
+            System.out.println("|                                   |");
+            System.out.println("|   Do you want to see another genre? (Y/N): ");
+            String userResponse = in.readLine().trim().toUpperCase();
+            if (!userResponse.equals("Y")) {
+                keepSearching = false;
+                System.out.println("|           Exiting search          |");
+            }
+        }
+    } catch(Exception e) {
+        System.err.println(e.getMessage());
+    }
+   }
+
+
+   
+   public static void searchByPrice(GameRental esql, String authorisedUser) {
+    try {
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("|        Enter a price range:       |");
+        String genreType = in.readLine();
+        System.out.println("   |");
+
+        String updateQuery = "UPDATE Users SET favGenre = '" + genreType + "' WHERE login = '" + authorisedUser + "';";
+        esql.executeUpdate(updateQuery);
+
+        System.out.println("|   Genre preference updated!       |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("|  Now enter a game title in       |");
+        System.out.println("|  the specified genre:             |");
+        String gameTitle = in.readLine();
+        System.out.println("   |");
+
+        // Search for the game title within the specified genre
+        String searchQuery = "SELECT gameName FROM Catalog WHERE genre = '" + genreType + "' AND gameName LIKE '%" + gameTitle + "%';";
+        List<List<String>> result = esql.executeQueryAndReturnResult(searchQuery);
+
+        System.out.println("=====================================");
+        if (result.isEmpty()) {
+            System.out.println("|   No games found for the given    |");
+            System.out.println("|   title and genre combination.    |");
+        } else {
+            System.out.println("|   Found games matching the        |");
+            System.out.println("|   specified title and genre:      |");
+            for (List<String> row : result) {
+                System.out.println("|   - " + row.get(0));
+            }
+        }
+        System.out.println("=====================================");
+
+    } catch(Exception e) {
+        System.err.println(e.getMessage());
+    }
+   }
+
+
+
    public static void placeOrder(GameRental esql) {}
    public static void viewAllOrders(GameRental esql) {}
    public static void viewRecentOrders(GameRental esql) {}
