@@ -844,44 +844,53 @@ public class GameRental {
    
    public static void searchByPrice(GameRental esql, String authorisedUser) {
     try {
-        System.out.println("=====================================");
-        System.out.println("|                                   |");
-        System.out.println("|        Enter a price range:       |");
-        String genreType = in.readLine();
-        System.out.println("   |");
+        boolean keepSearching = true;
+        while (keepSearching) {
+            System.out.println("=====================================");
+            System.out.println("|        Enter minimum price:       |");
+            String minPriceInput = in.readLine();
+            double minPrice = Double.parseDouble(minPriceInput);
+            System.out.println("|        Enter maximum price:       |");
+            String maxPriceInput = in.readLine();
+            double maxPrice = Double.parseDouble(maxPriceInput);
 
-        String updateQuery = "UPDATE Users SET favGenre = '" + genreType + "' WHERE login = '" + authorisedUser + "';";
-        esql.executeUpdate(updateQuery);
+            System.out.println("=====================================");
+            System.out.println("|            Choose order:          |");
+            System.out.println("|           1. Low to High          |");
+            System.out.println("|           2. High to Low          |");
+            int orderChoice = Integer.parseInt(in.readLine());
 
-        System.out.println("|   Genre preference updated!       |");
-        System.out.println("=====================================");
-        System.out.println("|                                   |");
-        System.out.println("|  Now enter a game title in       |");
-        System.out.println("|  the specified genre:             |");
-        String gameTitle = in.readLine();
-        System.out.println("   |");
+            String order = (orderChoice == 1) ? "ASC" : "DESC";
+            String priceQuery = "SELECT gameName, price FROM Catalog WHERE price BETWEEN " + minPrice + " AND " + maxPrice + " ORDER BY price " + order + ";";
+            List<List<String>> result = esql.executeQueryAndReturnResult(priceQuery);
 
-        // Search for the game title within the specified genre
-        String searchQuery = "SELECT gameName FROM Catalog WHERE genre = '" + genreType + "' AND gameName LIKE '%" + gameTitle + "%';";
-        List<List<String>> result = esql.executeQueryAndReturnResult(searchQuery);
+            System.out.println("=====================================");
+            if (result.isEmpty()) {
+                System.out.println("|   No games found within the       |");
+                System.out.println("|   specified price range.          |");
+            } else {
+                System.out.println("|   Games within the specified      |");
+                System.out.println("|   price range:                    |");
+                for (List<String> row : result) {
+                    System.out.println("|   - " + row.get(0) + ": $" + row.get(1));
+                }
+            }
+            System.out.println("=====================================");
 
-        System.out.println("=====================================");
-        if (result.isEmpty()) {
-            System.out.println("|   No games found for the given    |");
-            System.out.println("|   title and genre combination.    |");
-        } else {
-            System.out.println("|   Found games matching the        |");
-            System.out.println("|   specified title and genre:      |");
-            for (List<String> row : result) {
-                System.out.println("|   - " + row.get(0));
+            // Ask user if they want to search for another price range or quit
+            System.out.println("|                                   |");
+            System.out.println("|   Do you want to search another price range? (Y/N): ");
+            String userResponse = in.readLine().trim().toUpperCase();
+            if (!userResponse.equals("Y")) {
+                keepSearching = false;
+                System.out.println("|           Exiting search          |");
             }
         }
-        System.out.println("=====================================");
-
-    } catch(Exception e) {
+    } catch (Exception e) {
         System.err.println(e.getMessage());
     }
    }
+
 
 
 
