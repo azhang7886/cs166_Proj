@@ -268,11 +268,11 @@ public class GameRental {
             // These are sample SQL statements
             
             System.out.println("====================================");
-            System.out.println("|    Type 1 to create an account.   |");
-            System.out.println("|                                   |");
-            System.out.println("|    Type 2 to login to account.    |");
-            System.out.println("|                                   |");
-            System.out.println("|    Type 9 to exit the app.        |");
+            System.out.println("|   Type 1 to create an account.   |");
+            System.out.println("|                                  |");
+            System.out.println("|   Type 2 to login to account.    |");
+            System.out.println("|                                  |");
+            System.out.println("|    Type 9 to exit the app.       |");
             System.out.println("====================================");
             // System.out.println("1. Create an account!");
             // System.out.println("2. Log in");
@@ -453,9 +453,19 @@ public class GameRental {
          // make sure to cleanup the created table and close the connection.
          try{
             if(esql != null) {
-               System.out.print("Disconnecting from database...");
+               System.out.println("|----------------------------------|");
+               System.out.println("|----------------------------------|");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|   Disconnecting from database    |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
                esql.cleanup ();
-               System.out.println("Done\n\nBye !");
+               System.out.println("|              Bye!                |");
+               System.out.println("|----------------------------------|");
+               System.out.println("|----------------------------------|");
             }//end if
          }catch (Exception e) {
             // ignored.
@@ -485,9 +495,9 @@ public class GameRental {
       int input;
       // returns only if a correct value is given.
       do {
-         System.out.println("|                                   |");
-         System.out.println("|     Please make your choice:      |");
-         System.out.println("|                                   |");
+         System.out.println("|                                  |");
+         System.out.println("|     Please make your choice:     |");
+         System.out.println("|                                  |");
          try { // read the integer, parse it and break.
             input = Integer.parseInt(in.readLine());
             break;
@@ -605,6 +615,10 @@ public class GameRental {
         System.out.println("| Phone Number: " + user.get(4));
         System.out.println("| Number of Overdue Games: " + user.get(5));
         System.out.println("====================================");
+        
+        System.out.println("| Press any key to return to the homepage...");
+        in.readLine(); // Wait for the user to press Enter or any key
+
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
     }
@@ -612,9 +626,9 @@ public class GameRental {
 
    public static void updateProfile(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("|         Update Your Profile       |");
          System.out.println("=====================================");
@@ -693,15 +707,14 @@ public class GameRental {
          String query = " UPDATE Users SET password = '" + newPassword + "' WHERE login = '" + authorisedUser + "';";
          esql.executeUpdate(query);
          System.out.println("|                                   |");
-         System.out.println("|          Password updated!        |");
-         System.out.println("|                                   |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|          Returning to Home        |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|         Password updated!         |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|         Returning to Home         |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("=====================================");
       }catch(Exception e){
@@ -767,9 +780,9 @@ public class GameRental {
 
    public static void viewCatalog(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("|      Viewing Catalog Options      |");
          System.out.println("=====================================");
