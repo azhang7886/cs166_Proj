@@ -961,15 +961,13 @@ public class GameRental {
          List<String> order = info.get(0);
          List<List<String>> game = esql.executeQueryAndReturnResult(queryGames);
          System.out.println(" ====================================");
-         System.out.println("|              My Profile            |");
+         System.out.println("|             Order Info             |");
          System.out.println(" ====================================");
          System.out.println("| Order Timestamp: " + order.get(0));
          System.out.println("| Due Date: " + order.get(1));
          System.out.println("| Total Price: " + order.get(2));
          System.out.println("| TrackingID: " + order.get(3));
          System.out.println("| Ordered Games: " + game);
-         System.out.println("|                                   |");
-         System.out.println("|                                   |");
          System.out.println("=====================================");
       }catch (Exception e) {
          System.err.println(e.getMessage());
