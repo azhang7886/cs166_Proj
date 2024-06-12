@@ -407,7 +407,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     viewTrackingInfo(esql); 
+                     viewTrackingInfo(esql,authorisedUser); 
                      break;
 
                    case 9: 
@@ -415,7 +415,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     updateTrackingInfo(esql); 
+                     updateTrackingInfo(esql,authorisedUser); 
                      break;
 
                    case 10: 
@@ -423,7 +423,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     updateCatalog(esql); 
+                     updateCatalog(esql,authorisedUser); 
                      break;
 
                    case 11:
@@ -431,7 +431,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("====================================="); 
-                     updateUser(esql); 
+                     updateUser(esql,authorisedUser); 
                      break;
 
                    case 20: 
@@ -1046,11 +1046,61 @@ public class GameRental {
          System.err.println(e.getMessage());
       }
    }
-   public static void viewTrackingInfo(GameRental esql) {}
-   public static void updateTrackingInfo(GameRental esql) {}
-   public static void updateCatalog(GameRental esql) {}
-   public static void updateUser(GameRental esql) {}
+   
+   public static void viewTrackingInfo(GameRental esql, String authorisedUser) {
+    try {
+        boolean keepGoing = true;
+        
+        while (keepGoing) {
+            System.out.println("=====================================");
+            System.out.println("|                                   |");
+            System.out.println("|      Enter a Tracking ID:         |");
+            System.out.println("|                                   |");
+            System.out.println("=====================================");
+            String trackingID = in.readLine();
+
+            String query = "SELECT courierName, rentalOrderID, currentLocation, status, lastUpdateDate, additionalComments " +
+                           "FROM TrackingInfo WHERE trackingID = '" + trackingID + "';";
+            List<List<String>> result = esql.executeQueryAndReturnResult(query);
+
+            if (result.isEmpty()) {
+                System.out.println("No tracking information found for trackingID: " + trackingID);
+            } else {
+                List<String> trackingInfo = result.get(0);
+                System.out.println("=====================================");
+                System.out.println("|         Tracking Information      |");
+                System.out.println("=====================================");
+                System.out.println("| Courier Name: " + trackingInfo.get(0));
+                System.out.println("| Rental Order ID: " + trackingInfo.get(1));
+                System.out.println("| Current Location: " + trackingInfo.get(2));
+                System.out.println("| Status: " + trackingInfo.get(3));
+                System.out.println("| Last Updated Date: " + trackingInfo.get(4));
+                System.out.println("| Additional Comments: " + trackingInfo.get(5));
+                System.out.println("=====================================");
+            }
+
+            // Prompt user to enter another tracking ID or quit
+            System.out.println("Do you want to enter another tracking ID? (Y/N)");
+            String response = in.readLine();
+            if (!response.equalsIgnoreCase("Y")) {
+                keepGoing = false;
+                System.out.println("Returning to homepage...");
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Error: " + e.getMessage());
+    }
+   }
+
+
+   
+   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {}
+   public static void updateCatalog(GameRental esql,String authorisedUser) {}
+   public static void updateUser(GameRental esql,String authorisedUser) {}
 
 
 }//end GameRental
+
+
+
 
