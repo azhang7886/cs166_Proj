@@ -105,3 +105,10 @@ WHERE login =  ;
   */
  INSERT INTO GamesInOrder
  VALUES (rentalOrderID, gameID, unitsOrdered); 
+
+  /*
+  * update a user's login
+  */
+ UPDATE Users
+ SET login =  
+ WHERE login =  ;
