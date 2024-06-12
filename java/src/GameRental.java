@@ -968,7 +968,7 @@ public class GameRental {
          System.out.println("| Total Price: " + order.get(2));
          System.out.println("| TrackingID: " + order.get(3));
          System.out.println("| Ordered Games: " + game);
-         System.out.println("=====================================");
+         System.out.println(" =====================================");
       }catch (Exception e) {
          System.err.println(e.getMessage());
       }
