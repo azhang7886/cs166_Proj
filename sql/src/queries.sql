@@ -66,7 +66,6 @@ WHERE login =  ;
   /* 
   * View specific rental order ID
   */
- SELECT orderTimestamp, dueDate, totalPrice, trackingID
- FROM RentalOrder
- WHERE login =  AND rentalOrderID =  ;
- 
+ SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID
+ FROM RentalOrder R, TrackingInfo T
+ WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = T.rentalOrderID;
