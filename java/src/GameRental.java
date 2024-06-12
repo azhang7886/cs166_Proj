@@ -664,6 +664,19 @@ public class GameRental {
       return null;
    }
 
+   public static String getRole(GameRental esql, String authorisedUser) {
+      try {
+         String query = "SELECT password FROM Users WHERE login = '" + authorisedUser + "';";
+         int correct = esql.executeQueryAndPrintResult(query);
+         List<List<String>> currRole = esql.executeQueryAndReturnResult(query);
+         String returnRole = currRole.get(0).get(0);
+         return returnRole;
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+      return null;
+   }
+
    public static void updatePassword(GameRental esql, String authorisedUser) {
       try {
          System.out.println("=====================================");
