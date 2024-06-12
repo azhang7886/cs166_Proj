@@ -47,4 +47,18 @@ WHERE login =  ;
  SET phoneNum =  
  WHERE login =  ;
 
- 
+ /* 
+  * View all rental order's 
+  */
+ SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate
+ FROM RentalOrder
+ WHERE login = ;
+
+  /* 
+  * View first 5 rental orders 
+  */
+ SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate
+ FROM RentalOrder
+ WHERE login = 
+ ORDER BY rentalOrderID
+ LIMIT 5;
