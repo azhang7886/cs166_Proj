@@ -62,3 +62,11 @@ WHERE login =  ;
  WHERE login = 
  ORDER BY rentalOrderID
  LIMIT 5;
+
+  /* 
+  * View specific rental order ID
+  */
+ SELECT orderTimestamp, dueDate, totalPrice, trackingID
+ FROM RentalOrder
+ WHERE login =  AND rentalOrderID =  ;
+ 
