@@ -396,7 +396,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("====================================="); 
-                     viewOrderInfo(esql); 
+                     viewOrderInfo(esql, authorisedUser); 
                      break;
 
                    case 8: 
@@ -943,7 +943,21 @@ public class GameRental {
       }
    }
 
-   public static void viewOrderInfo(GameRental esql) {}
+   public static void viewOrderInfo(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("=====================================");
+         System.out.println("|  Viewing A Specific Recent Order  |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+         System.out.println("|Insert the OrderId you want to view|");
+         String orderId = in.readLine();
+         
+         String
+      }catch (Exception e) {
+         System.err.println(e.getMessage());
+      }
+   }
    public static void viewTrackingInfo(GameRental esql) {}
    public static void updateTrackingInfo(GameRental esql) {}
    public static void updateCatalog(GameRental esql) {}
