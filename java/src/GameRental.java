@@ -24,6 +24,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.sql.Timestamp;  
+import java.util.Date;
+import java.util.Calendar;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -917,38 +920,66 @@ public class GameRental {
     }
    }
 
-   public static void placeOrder(GameRental esql, String authorisedUser) {
-      try {
-         /* incrementing the last order number by 1 to use as new order number */
-         String getLastQuery = "SELECT rentalOrderID FROM RentalOrder ORDER BY rentalOrderID DESC LIMIT 1;";
-         List<List<String>> getLast = esql.executeQueryAndReturnResult(getLastQuery);
-         String lastID = getLast.get(0).get(0); 
-         Integer lastOrderId = Integer.valueOf(lastID.substring(lastID.length() - 4)); 
-         Integer lastOrderId_1 = lastOrderId + 1;
-         String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
+    public static void placeOrder(GameRental esql, String authorisedUser) {
+        try {
+            // Incrementing the last order number by 1 to use as new order number
+            String getLastQuery = "SELECT rentalOrderID FROM RentalOrder ORDER BY rentalOrderID DESC LIMIT 1;";
+            List<List<String>> getLast = esql.executeQueryAndReturnResult(getLastQuery);
+            String lastID = getLast.get(0).get(0);
+            Integer lastOrderId = Integer.valueOf(lastID.substring(lastID.length() - 4));
+            Integer lastOrderId_1 = lastOrderId + 1;
+            String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
 
-         System.out.println("Insert the game ID of the game you want to order");
-         String gameId = in.readLine();
-         System.out.println("Insert the amount of copies you want of the game you want to order");
-         Integer numCopies = Integer.valueOf(in.readLine());
+            System.out.println("How many games do you want to order?");
+            Integer numOfGames = Integer.valueOf(in.readLine());
 
-         String getCost = "SELECT price FROM Catalog WHERE gameID = '" + gameId + "';";
-         List<List<String>> returnCost = esql.executeQueryAndReturnResult(getCost);
+            // Collect game information
+            List<String> gameIds = new ArrayList<>();
+            List<Integer> numCopiesList = new ArrayList<>();
+            Float totalCost = 0.0f;
 
-         String cost = returnCost.get(0).get(0);
-         System.out.println(cost);
-         
-         Integer costNum = Integer.valueOf(Float.parseFloat(cost));
+            for (int i = 0; i < numOfGames; i++) {
+                System.out.println("Insert the game ID of the game you want to order");
+                String gameId = in.readLine();
+                gameIds.add(gameId);
 
+                System.out.println("Insert the amount of copies you want of the game you want to order");
+                Integer numCopies = Integer.valueOf(in.readLine());
+                numCopiesList.add(numCopies);
 
-         Integer totalCost = costNum*numCopies;
+                String getCost = "SELECT price FROM Catalog WHERE gameID = '" + gameId + "';";
+                List<List<String>> returnCost = esql.executeQueryAndReturnResult(getCost);
+                String cost = returnCost.get(0).get(0);
+                Float costNum = Float.parseFloat(cost);
+                totalCost += costNum * numCopies;
+            }
 
-         System.out.println("totalCost");
+            // Insert the RentalOrder first
+            Timestamp currTime = new Timestamp(new Date().getTime());
+            Calendar today = Calendar.getInstance();
+            today.setTime(currTime);
+            today.add(Calendar.DAY_OF_MONTH, 20);
+            Timestamp dateDue = new Timestamp(today.getTimeInMillis());
 
-         }catch (Exception e) {
-         System.err.println(e.getMessage());
+            String putIntoRentalOrder = "INSERT INTO RentalOrder(rentalOrderID, login, noOfGames, totalPrice, orderTimestamp, dueDate) VALUES ('" + newOrderId + "', '" + authorisedUser + "', '" + numOfGames + "', '" + totalCost + "', '" + currTime + "', '" + dateDue + "');";
+            esql.executeUpdate(putIntoRentalOrder);
+
+            // Now insert the games into GamesInOrder
+            for (int i = 0; i < numOfGames; i++) {
+                String gameId = gameIds.get(i);
+                Integer numCopies = numCopiesList.get(i);
+
+                String putIntoGameinOrder = "INSERT INTO GamesInOrder(rentalOrderID, gameID, unitsOrdered) VALUES ('" + newOrderId + "', '" + gameId + "', '" + numCopies + "');";
+                esql.executeUpdate(putIntoGameinOrder);
+            }
+
+            System.out.printf("Total cost = %.2f\n", totalCost);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
-   }
+
 
    public static void viewAllOrders(GameRental esql, String authorisedUser) {
       try {
@@ -975,7 +1006,7 @@ public class GameRental {
          System.out.println("|                                   |");
          System.out.println("|                                   |");
 
-         String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "' ORDER BY rentalOrderID LIMIT 5;";
+         String query = "SELECT rentalOrderID FROM RentalOrder WHERE login = '" + authorisedUser + "' ORDER BY rentalOrderID LIMIT 5;";
          esql.executeQueryAndPrintResult(query);
          System.out.println("|                                   |");
          System.out.println("|                                   |");
@@ -998,7 +1029,7 @@ public class GameRental {
 
          String orderId = in.readLine();
          String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "'  AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
-         String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID;";
+         String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T, GamesInOrder G WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = G.rentalOrderID AND R.rentalOrderID = T.rentalOrderID;";
          List<List<String>> info = esql.executeQueryAndReturnResult(queryInfo);
          List<String> order = info.get(0);
          List<List<String>> game = esql.executeQueryAndReturnResult(queryGames);

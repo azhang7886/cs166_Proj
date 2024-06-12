@@ -49,6 +49,7 @@ WHERE login =  ;
 
  /* 
   * View all rental order's 
+  * EDIT: only ouput the rentalOrderId in java
   */
  SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate
  FROM RentalOrder
@@ -56,6 +57,7 @@ WHERE login =  ;
 
   /* 
   * View first 5 rental orders 
+  * EDIT: only ouput the rentalOrderId in java
   */
  SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate
  FROM RentalOrder
@@ -67,8 +69,8 @@ WHERE login =  ;
   * View specific rental order ID
   */
  SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID
- FROM RentalOrder R, TrackingInfo T
- WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = T.rentalOrderID;
+ FROM RentalOrder R, TrackingInfo T, GamesInOrder G
+ WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = G.rentalOrderID AND R.rentalOrderID = T.rentalOrderID;
 
   /* 
   * View the games for a specific renatal order
@@ -91,3 +93,15 @@ WHERE login =  ;
  SELECT price
  FROM Catalog
  WHERE gameID =  ;
+
+  /*
+  * insert rental order into RentalOrder
+  */
+ INSERT INTO RentalOrder
+ VALUES (rentalOrderID, login, noOfGames, totalPrice, orderTimestamp, dueDate);
+
+  /*
+  * insert rental order into GamesInOrder
+  */
+ INSERT INTO GamesInOrder
+ VALUES (rentalOrderID, gameID, unitsOrdered); 
