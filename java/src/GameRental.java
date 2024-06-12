@@ -952,8 +952,12 @@ public class GameRental {
          System.out.println("|                                   |");
          System.out.println("|Insert the OrderId you want to view|");
          String orderId = in.readLine();
-         
-         String
+
+         String query = "SELECT orderTimestamp, dueDate, totalPrice, trackingID FROM RentalOrder WHERE login = '" + authorisedUser + "' AND rentalOrderID = '" + orderId + "';";
+         esql.executeQueryAndPrintResult(query);
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
       }catch (Exception e) {
          System.err.println(e.getMessage());
       }
