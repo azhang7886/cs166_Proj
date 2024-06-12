@@ -588,23 +588,23 @@ public class GameRental {
 
         // Assuming the Users table has columns in the order: login, password, role, favGames, phoneNum, numOverDueGames
         List<String> user = result.get(0);
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|          Loading Profile         |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("====================================");
-        System.out.println("|              My Profile           |");
-        System.out.println("====================================");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|          Loading Profile           |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println(" ====================================");
+        System.out.println("|              My Profile            |");
+        System.out.println(" ====================================");
         System.out.println("| Login: " + user.get(0));
         System.out.println("| Password: " + user.get(1));
         System.out.println("| Role: " + user.get(2));
         System.out.println("| Favorite Games: " + user.get(3));
         System.out.println("| Phone Number: " + user.get(4));
         System.out.println("| Number of Overdue Games: " + user.get(5));
-        System.out.println("====================================");
+        System.out.println(" ====================================");
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
     }
@@ -949,12 +949,25 @@ public class GameRental {
          System.out.println("|  Viewing A Specific Recent Order  |");
          System.out.println("=====================================");
          System.out.println("|                                   |");
-         System.out.println("|                                   |");
          System.out.println("|Insert the OrderId you want to view|");
-         String orderId = in.readLine();
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
+         System.out.println("");
 
-         String query = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID;";
-         esql.executeQueryAndPrintResult(query);
+         String orderId = in.readLine();
+         String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "'  AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
+         String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID;";
+         List<List<String>> info = esql.executeQueryAndReturnResult(queryInfo);
+         List<String> order = info.get(0);
+         List<List<String>> game = esql.executeQueryAndReturnResult(queryGames);
+         System.out.println(" ====================================");
+         System.out.println("|              My Profile            |");
+         System.out.println(" ====================================");
+         System.out.println("| Order Timestamp: " + order.get(0));
+         System.out.println("| Due Date: " + order.get(1));
+         System.out.println("| Total Price: " + order.get(2));
+         System.out.println("| TrackingID: " + order.get(3));
+         System.out.println("| Ordered Games: " + game);
          System.out.println("|                                   |");
          System.out.println("|                                   |");
          System.out.println("=====================================");

@@ -69,3 +69,11 @@ WHERE login =  ;
  SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID
  FROM RentalOrder R, TrackingInfo T
  WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = T.rentalOrderID;
+
+  /* 
+  * View the games for a specific renatal order
+  */
+ SELECT C.gameName
+ FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C
+ WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;
+
