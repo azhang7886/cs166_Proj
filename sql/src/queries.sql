@@ -77,3 +77,10 @@ WHERE login =  ;
  FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C
  WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;
 
+  /* 
+  * return the last/highest rental order number
+  */
+ SELECT rentalOrderID
+ FROM RentalOrder
+ ORDER BY rentalOrderID DESC
+ LIMIT 1;

@@ -372,7 +372,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     placeOrder(esql); 
+                     placeOrder(esql, authorisedUser); 
                      break;
 
                    case 5: 
@@ -917,10 +917,26 @@ public class GameRental {
     }
    }
 
+   public static void placeOrder(GameRental esql, String authorisedUser) {
+      try {
+         /* incrementing the last order number by 1 to use as new order number */
+         String getLastQuery = "SELECT rentalOrderID FROM RentalOrder ORDER BY rentalOrderID DESC LIMIT 1;";
+         List<List<String>> getLast = esql.executeQueryAndReturnResult(getLastQuery);
+         String lastID = getLast.get(0).get(0); 
+         Integer lastOrderId = Integer.valueOf(lastID.substring(lastID.length() - 4)); 
+         Integer lastOrderId_1 = lastOrderId + 1;
+         String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
 
+         System.out.println("Insert the game ID of the game you want to order");
+         String gameId = in.readLine();
+         System.out.println("Insert the amount of copies you want of the game you want to order");
+         Integer numCopies = Integer.valueOf(in.readLine());
+         
+         }catch (Exception e) {
+         System.err.println(e.getMessage());
+    }
+   }
 
-
-   public static void placeOrder(GameRental esql) {}
    public static void viewAllOrders(GameRental esql, String authorisedUser) {
       try {
          System.out.println("=====================================");
