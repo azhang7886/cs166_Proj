@@ -84,3 +84,10 @@ WHERE login =  ;
  FROM RentalOrder
  ORDER BY rentalOrderID DESC
  LIMIT 1;
+
+  /*
+  * return price of a game
+  */
+ SELECT price
+ FROM Catalog
+ WHERE gameID =  ;
