@@ -931,7 +931,20 @@ public class GameRental {
          String gameId = in.readLine();
          System.out.println("Insert the amount of copies you want of the game you want to order");
          Integer numCopies = Integer.valueOf(in.readLine());
+
+         String getCost = "SELECT price FROM Catalog WHERE gameID = '" + gameId + "';";
+         List<List<String>> returnCost = esql.executeQueryAndReturnResult(getCost);
+
+         String cost = returnCost.get(0).get(0);
+         System.out.println(cost);
          
+         Integer costNum = Integer.valueOf(Float.parseFloat(cost));
+
+
+         Integer totalCost = costNum*numCopies;
+
+         System.out.println("totalCost");
+
          }catch (Exception e) {
          System.err.println(e.getMessage());
     }
