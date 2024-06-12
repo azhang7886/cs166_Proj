@@ -268,11 +268,11 @@ public class GameRental {
             // These are sample SQL statements
             
             System.out.println("====================================");
-            System.out.println("|    Type 1 to create an account.   |");
-            System.out.println("|                                   |");
-            System.out.println("|    Type 2 to login to account.    |");
-            System.out.println("|                                   |");
-            System.out.println("|    Type 9 to exit the app.        |");
+            System.out.println("|   Type 1 to create an account.   |");
+            System.out.println("|                                  |");
+            System.out.println("|   Type 2 to login to account.    |");
+            System.out.println("|                                  |");
+            System.out.println("|    Type 9 to exit the app.       |");
             System.out.println("====================================");
             // System.out.println("1. Create an account!");
             // System.out.println("2. Log in");
@@ -372,7 +372,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     placeOrder(esql); 
+                     placeOrder(esql, authorisedUser); 
                      break;
 
                    case 5: 
@@ -380,7 +380,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     viewAllOrders(esql); 
+                     viewAllOrders(esql, authorisedUser); 
                      break;
 
                    case 6: 
@@ -388,7 +388,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     viewRecentOrders(esql); 
+                     viewRecentOrders(esql, authorisedUser); 
                      break;
 
                    case 7:
@@ -396,7 +396,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("====================================="); 
-                     viewOrderInfo(esql); 
+                     viewOrderInfo(esql, authorisedUser); 
                      break;
 
                    case 8: 
@@ -404,7 +404,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     viewTrackingInfo(esql); 
+                     viewTrackingInfo(esql,authorisedUser); 
                      break;
 
                    case 9: 
@@ -412,7 +412,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     updateTrackingInfo(esql); 
+                     updateTrackingInfo(esql,authorisedUser); 
                      break;
 
                    case 10: 
@@ -420,7 +420,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("=====================================");
-                     updateCatalog(esql); 
+                     updateCatalog(esql,authorisedUser); 
                      break;
 
                    case 11:
@@ -428,7 +428,7 @@ public class GameRental {
                      System.out.println("|                 o                 |");
                      System.out.println("|                 o                 |");
                      System.out.println("====================================="); 
-                     updateUser(esql); 
+                     updateUser(esql,authorisedUser); 
                      break;
 
                    case 20: 
@@ -453,9 +453,19 @@ public class GameRental {
          // make sure to cleanup the created table and close the connection.
          try{
             if(esql != null) {
-               System.out.print("Disconnecting from database...");
+               System.out.println("|----------------------------------|");
+               System.out.println("|----------------------------------|");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|   Disconnecting from database    |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
+               System.out.println("|                o                 |");
                esql.cleanup ();
-               System.out.println("Done\n\nBye !");
+               System.out.println("|              Bye!                |");
+               System.out.println("|----------------------------------|");
+               System.out.println("|----------------------------------|");
             }//end if
          }catch (Exception e) {
             // ignored.
@@ -485,9 +495,9 @@ public class GameRental {
       int input;
       // returns only if a correct value is given.
       do {
-         System.out.println("|                                   |");
-         System.out.println("|     Please make your choice:      |");
-         System.out.println("|                                   |");
+         System.out.println("|                                  |");
+         System.out.println("|     Please make your choice:     |");
+         System.out.println("|                                  |");
          try { // read the integer, parse it and break.
             input = Integer.parseInt(in.readLine());
             break;
@@ -588,16 +598,16 @@ public class GameRental {
 
         // Assuming the Users table has columns in the order: login, password, role, favGames, phoneNum, numOverDueGames
         List<String> user = result.get(0);
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|          Loading Profile         |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("|                 o                |");
-        System.out.println("====================================");
-        System.out.println("|              My Profile           |");
-        System.out.println("====================================");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|          Loading Profile           |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println("|                 o                  |");
+        System.out.println(" ====================================");
+        System.out.println("|              My Profile            |");
+        System.out.println(" ====================================");
         System.out.println("| Login: " + user.get(0));
         System.out.println("| Password: " + user.get(1));
         System.out.println("| Role: " + user.get(2));
@@ -605,6 +615,10 @@ public class GameRental {
         System.out.println("| Phone Number: " + user.get(4));
         System.out.println("| Number of Overdue Games: " + user.get(5));
         System.out.println("====================================");
+        System.out.println("| Press any key to return to the homepage...");
+        in.readLine(); // Wait for the user to press Enter or any key
+
+
     } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
     }
@@ -612,9 +626,9 @@ public class GameRental {
 
    public static void updateProfile(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("|         Update Your Profile       |");
          System.out.println("=====================================");
@@ -706,15 +720,14 @@ public class GameRental {
          String query = " UPDATE Users SET password = '" + newPassword + "' WHERE login = '" + authorisedUser + "';";
          esql.executeUpdate(query);
          System.out.println("|                                   |");
-         System.out.println("|          Password updated!        |");
-         System.out.println("|                                   |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|          Returning to Home        |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|         Password updated!         |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|         Returning to Home         |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("=====================================");
       }catch(Exception e){
@@ -780,9 +793,9 @@ public class GameRental {
 
    public static void viewCatalog(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
-         System.out.println("|                  o                |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
+         System.out.println("|                 o                 |");
          System.out.println("=====================================");
          System.out.println("|      Viewing Catalog Options      |");
          System.out.println("=====================================");
@@ -904,18 +917,161 @@ public class GameRental {
     }
    }
 
+   public static void placeOrder(GameRental esql, String authorisedUser) {
+   //    try {
+   //       /* incrementing the last order number by 1 to use as new order number */
+   //       String getLastQuery = "SELECT rentalOrderID FROM RentalOrder ORDER BY rentalOrderID DESC LIMIT 1;";
+   //       List<List<String>> getLast = esql.executeQueryAndReturnResult(getLastQuery);
+   //       String lastID = getLast.get(0).get(0); 
+   //       Integer lastOrderId = Integer.valueOf(lastID.substring(lastID.length() - 4)); 
+   //       Integer lastOrderId_1 = lastOrderId + 1;
+   //       String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
+
+   //       System.out.println("Insert the game ID of the game you want to order");
+   //       String gameId = in.readLine();
+   //       System.out.println("Insert the amount of copies you want of the game you want to order");
+   //       Integer numCopies = Integer.valueOf(in.readLine());
+
+   //       String getCost = "SELECT price FROM Catalog WHERE gameID = '" + gameId + "';";
+   //       List<List<String>> returnCost = esql.executeQueryAndReturnResult(getCost);
+
+   //       String cost = returnCost.get(0).get(0);
+   //       System.out.println(cost);
+
+   //       Integer costNum = Integer.valueOf(Float.parseFloat(cost));
 
 
+   //       Integer totalCost = costNum*numCopies;
 
-   public static void placeOrder(GameRental esql) {}
-   public static void viewAllOrders(GameRental esql) {}
-   public static void viewRecentOrders(GameRental esql) {}
-   public static void viewOrderInfo(GameRental esql) {}
-   public static void viewTrackingInfo(GameRental esql) {}
-   public static void updateTrackingInfo(GameRental esql) {}
-   public static void updateCatalog(GameRental esql) {}
-   public static void updateUser(GameRental esql) {}
+   //       System.out.println("totalCost");
+
+   //       }catch (Exception e) {
+   //       System.err.println(e.getMessage());
+   //  }
+   }
+
+
+   
+   public static void viewAllOrders(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("=====================================");
+         System.out.println("|    Viewing All Previous Orders    |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+
+         String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "';";
+         esql.executeQueryAndPrintResult(query);
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
+      }catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
+   }
+   public static void viewRecentOrders(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("=====================================");
+         System.out.println("|    Viewing 5 Most Recent Orders   |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+
+         String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "' ORDER BY rentalOrderID LIMIT 5;";
+         esql.executeQueryAndPrintResult(query);
+         System.out.println("|                                   |");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
+      }catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
+   }
+
+   public static void viewOrderInfo(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("=====================================");
+         System.out.println("|  Viewing A Specific Recent Order  |");
+         System.out.println("=====================================");
+         System.out.println("|                                   |");
+         System.out.println("|Insert the OrderId you want to view|");
+         System.out.println("|                                   |");
+         System.out.println("=====================================");
+         System.out.println("");
+
+         String orderId = in.readLine();
+         String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "'  AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
+         String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID;";
+         List<List<String>> info = esql.executeQueryAndReturnResult(queryInfo);
+         List<String> order = info.get(0);
+         List<List<String>> game = esql.executeQueryAndReturnResult(queryGames);
+         System.out.println(" ====================================");
+         System.out.println("|             Order Info             |");
+         System.out.println(" ====================================");
+         System.out.println("| Order Timestamp: " + order.get(0));
+         System.out.println("| Due Date: " + order.get(1));
+         System.out.println("| Total Price: " + order.get(2));
+         System.out.println("| TrackingID: " + order.get(3));
+         System.out.println("| Ordered Games: " + game);
+         System.out.println(" =====================================");
+      }catch (Exception e) {
+         System.err.println(e.getMessage());
+      }
+   }
+   
+   public static void viewTrackingInfo(GameRental esql, String authorisedUser) {
+    try {
+        boolean keepGoing = true;
+        
+        while (keepGoing) {
+            System.out.println("=====================================");
+            System.out.println("|                                   |");
+            System.out.println("|      Enter a Tracking ID:         |");
+            System.out.println("|                                   |");
+            System.out.println("=====================================");
+            String trackingID = in.readLine();
+
+            String query = "SELECT courierName, rentalOrderID, currentLocation, status, lastUpdateDate, additionalComments " +
+                           "FROM TrackingInfo WHERE trackingID = '" + trackingID + "';";
+            List<List<String>> result = esql.executeQueryAndReturnResult(query);
+
+            if (result.isEmpty()) {
+                System.out.println("No tracking information found for trackingID: " + trackingID);
+            } else {
+                List<String> trackingInfo = result.get(0);
+                System.out.println("=====================================");
+                System.out.println("|         Tracking Information      |");
+                System.out.println("=====================================");
+                System.out.println("| Courier Name: " + trackingInfo.get(0));
+                System.out.println("| Rental Order ID: " + trackingInfo.get(1));
+                System.out.println("| Current Location: " + trackingInfo.get(2));
+                System.out.println("| Status: " + trackingInfo.get(3));
+                System.out.println("| Last Updated Date: " + trackingInfo.get(4));
+                System.out.println("| Additional Comments: " + trackingInfo.get(5));
+                System.out.println("=====================================");
+            }
+
+            // Prompt user to enter another tracking ID or quit
+            System.out.println("Do you want to enter another tracking ID? (Y/N)");
+            String response = in.readLine();
+            if (!response.equalsIgnoreCase("Y")) {
+                keepGoing = false;
+                System.out.println("Returning to homepage...");
+            }
+        }
+    } catch (Exception e) {
+        System.err.println("Error: " + e.getMessage());
+    }
+   }
+
+
+   
+   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {}
+   public static void updateCatalog(GameRental esql,String authorisedUser) {}
+   public static void updateUser(GameRental esql,String authorisedUser) {}
 
 
 }//end GameRental
+
+
+
 
