@@ -121,3 +121,11 @@ WHERE login =  ;
  UPDATE Users
  SET role =
  WHERE login =  ;
+
+  /* 
+  * update a user's total num of overdue games
+  * MANAGER ONLY
+  */
+ UPDATE Users 
+ SET numOverDueGames =
+ WHERE login =  ;

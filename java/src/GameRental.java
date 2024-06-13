@@ -1121,14 +1121,14 @@ public class GameRental {
             System.out.println("|                                   |");
             System.out.println("| 2.      Update role       |");
             System.out.println("|                                   |");
-            System.out.println("| 3.     Update favorite number of overdue games      |");
+            System.out.println("| 3.     Update number of overdue games      |");
             System.out.println("|                                   |");
             System.out.println("|-----------------------------------|");
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: workerUpdateLogin(esql, authorisedUser); break;
                case 2: workerUpdateRole(esql, authorisedUser); break;
-               case 3: updateFavGame(esql, authorisedUser); break;
+               case 3: updateOverdueGames(esql, authorisedUser); break;
             }
          }
          else {
@@ -1172,6 +1172,22 @@ public class GameRental {
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
+   }
+
+   public static void updateOverdueGames(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("|Enter user you want to update number of overdue games:");
+         String userUpdate = in.readLine();
+
+         System.out.println("|Enter number of overdue games:");
+         Integer newNumber = Integer.valueOf(in.readLine());
+
+         String newLoginQuery = "UPDATE Users SET numOverdueGames = '" + newNumber + "' WHERE login = '" + userUpdate + "';";
+         esql.executeUpdate(newLoginQuery);
+
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }   
    }
 
 }//end GameRental
