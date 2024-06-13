@@ -1102,7 +1102,7 @@ public class GameRental {
          List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
          String userRole = roleQuery.get(0).get(0);
          System.out.println(userRole);
-         if (userRole.trim().equals("manager")) {
+         if (userRole.trim().equals("manager") || userRole.trim().equals("employee")) {
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
