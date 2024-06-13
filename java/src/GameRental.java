@@ -1166,7 +1166,8 @@ public class GameRental {
             esql.executeUpdate(newLoginQuery);
          }
          else {
-            System.out.println("Invalid input . . . returning to main menu");
+            System.out.println("Invalid input. Press any key to return to the main menu.");
+            in.readLine();
          }
       }catch(Exception e){
          System.err.println (e.getMessage());
