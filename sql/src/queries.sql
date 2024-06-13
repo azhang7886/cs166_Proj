@@ -115,7 +115,13 @@ WHERE login =  ;
 
  /* 
   * update a user's login for rental Orders 
+  * MANAGER ONLY
   */
  UPDATE RentalOrder
  SET login =
  WHERE login =  ;
+
+  /* 
+  * update a user's role
+  * MANAGER ONLY
+  */

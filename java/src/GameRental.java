@@ -1109,7 +1109,7 @@ public class GameRental {
          List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
          String userRole = roleQuery.get(0).get(0);
          System.out.println(userRole);
-         if (userRole.trim().equals("manager") || userRole.trim().equals("employee")) {
+         if (userRole.trim().equals("manager")) {
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
@@ -1119,7 +1119,7 @@ public class GameRental {
             System.out.println("|                                   |");
             System.out.println("| 1.       Update login          |");
             System.out.println("|                                   |");
-            System.out.println("| 2.      Update phone role       |");
+            System.out.println("| 2.      Update role       |");
             System.out.println("|                                   |");
             System.out.println("| 3.     Update favorite number of overdue games      |");
             System.out.println("|                                   |");
@@ -1127,7 +1127,7 @@ public class GameRental {
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: workerUpdateLogin(esql, authorisedUser); break;
-               case 2: updatePhoneNum(esql, authorisedUser); break;
+               case 2: workerUpdateRole(esql, authorisedUser); break;
                case 3: updateFavGame(esql, authorisedUser); break;
             }
          }
@@ -1147,7 +1147,6 @@ public class GameRental {
         System.out.println("|Enter the new login name:");
         String newUserLogin = in.readLine();
 
-        //update the rentalOrder table first before updating the user to maintain the foreign keys
         String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
         esql.executeUpdate(newLoginQuery);
       }catch(Exception e){
@@ -1155,6 +1154,31 @@ public class GameRental {
       }
    }
 
+   public static void workerUpdateRole(GameRental esql, String authorisedUser) {
+      try {
+         System.out.println("|Enter user you want to update role:");
+         String userUpdate = in.readLine();
+
+         System.out.println("|Set user role to customer, employee, or manager:");
+         String newUserLogin = in.readLine();
+         if () {
+
+         }
+         else if () {
+
+         }
+         else if () {
+
+         }
+         else {
+            System.out.println("Invalid input . . . returning to main menu")
+         }
+         String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+         esql.executeUpdate(newLoginQuery);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
 
 }//end GameRental
 
