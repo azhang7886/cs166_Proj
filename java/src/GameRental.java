@@ -1101,7 +1101,41 @@ public class GameRental {
 
 
    
-   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {}
+   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {
+      try {
+         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+         List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+         String userRole = roleQuery.get(0).get(0);
+         System.out.println(userRole);
+         if (userRole.trim().equals("manager")) {
+            System.out.println("|                 o                 |");
+            System.out.println("|                 o                 |");
+            System.out.println("|                 o                 |");
+            System.out.println("=====================================");
+            System.out.println("|     Update a Customer's Profile   |");
+            System.out.println("=====================================");
+            System.out.println("|                                   |");
+            System.out.println("| 1.       Update login          |");
+            System.out.println("|                                   |");
+            System.out.println("| 2.      Update role       |");
+            System.out.println("|                                   |");
+            System.out.println("| 3.     Update number of overdue games      |");
+            System.out.println("|                                   |");
+            System.out.println("|-----------------------------------|");
+            // System.out.println("|      Please make your choice:     |");
+            switch(readChoice()) {
+               case 1: workerUpdateLogin(esql, authorisedUser); break;
+               case 2: workerUpdateRole(esql, authorisedUser); break;
+               case 3: updateOverdueGames(esql, authorisedUser); break;
+            }
+         }
+         else {
+            System.out.println("You do not have permissions to edit");
+         }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
    public static void updateUser(GameRental esql, String authorisedUser) {
       try {
