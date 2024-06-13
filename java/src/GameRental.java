@@ -1108,6 +1108,8 @@ public class GameRental {
          String userRole = roleQuery.get(0).get(0);
          System.out.println(userRole);
          if (userRole.trim().equals("manager") || userRole.trim().equals("manager")) {
+            System.out.println("Enter tracking ID you would like to update");
+            String trackingIdUpdate = in.readLine();
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
@@ -1126,9 +1128,10 @@ public class GameRental {
             System.out.println("|-----------------------------------|");
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
-               case 1: workerUpdateLogin(esql, authorisedUser); break;
-               case 2: workerUpdateRole(esql, authorisedUser); break;
-               case 3: updateOverdueGames(esql, authorisedUser); break;
+               case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
+               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
+               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
+               case 4: addAdditionalComments(); break;
             }
          }
          else {
@@ -1138,6 +1141,34 @@ public class GameRental {
          System.err.println (e.getMessage());
       }
    }
+   public static void updateTrackingStatus(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Options . . .");
+         System.out.println("1. change to:  Out for Delivery.");
+         System.out.println("2. change to:  Delivered.");
+         System.out.println("3. change to:  In Transit.");
+         System.out.println("4. change to:  Delayed.");
+         System.out.println("5. change to:  Ready for Pickup.");
+         System.out.println("6. change to:  Attempted Delivery.");
+         System.out.println("7. change to:  Arrived at Facility.");
+         System.out.println("8. change to:  Returned to Sender.");
+         switch(readChoice()) {
+               case 1: 
+                  String update1 = " UPDATE TrackingInfo SET role = Out for Delivery WHERE trackingID = trackingIdUpdate;"; 
+                  break;
+               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
+               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
+               case 4: addAdditionalComments(); break;
+               case 5: addAdditionalComments(); break;
+               case 6: addAdditionalComments(); break;
+               case 7: addAdditionalComments(); break;
+               case 8: addAdditionalComments(); break;
+            }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
    public static void updateUser(GameRental esql, String authorisedUser) {
       try {

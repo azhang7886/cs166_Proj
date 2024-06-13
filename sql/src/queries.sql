@@ -129,3 +129,11 @@ WHERE login =  ;
  UPDATE Users 
  SET numOverDueGames =
  WHERE login =  ;
+
+  /* 
+  * updating tracking order status
+  * MANAGER/EMPLOYEE ONLY
+  */
+ UPDATE TrackingInfo 
+ SET role = 
+ WHERE trackingID =  ;
