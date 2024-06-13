@@ -108,7 +108,32 @@ WHERE login =  ;
 
   /*
   * update a user's login
+  * MANAGER ONLY
   */
  UPDATE Users
  SET login =  
  WHERE login =  ;
+
+  /* 
+  * update a user's role
+  * MANAGER ONLY
+  */
+ UPDATE Users
+ SET role =
+ WHERE login =  ;
+
+  /* 
+  * update a user's total num of overdue games
+  * MANAGER ONLY
+  */
+ UPDATE Users 
+ SET numOverDueGames =
+ WHERE login =  ;
+
+  /* 
+  * updating tracking order status
+  * MANAGER/EMPLOYEE ONLY
+  */
+ UPDATE TrackingInfo 
+ SET role = 
+ WHERE trackingID =  ;
