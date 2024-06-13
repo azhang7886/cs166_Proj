@@ -1101,10 +1101,8 @@ public class GameRental {
          String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
          List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
          String userRole = roleQuery.get(0).get(0);
-         if (!(userRole.equals("manager")) || !(userRole.equals("employee"))) {
-            System.out.println("You do not have permissions to edit");
-         }
-         else {
+         System.out.println(userRole);
+         if (userRole.trim().equals("manager")) {
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
@@ -1126,7 +1124,9 @@ public class GameRental {
                case 3: updateFavGame(esql, authorisedUser); break;
             }
          }
-         
+         else {
+            System.out.println("You do not have permissions to edit");
+         }
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
@@ -1134,11 +1134,15 @@ public class GameRental {
 
    public static void workerUpdateLogin(GameRental esql, String authorisedUser) {
       try {
-         System.out.println("|                                   |");
-         System.out.println("|                                   |");
-         System.out.println("|         Enter new login:          |");
-         String newLogin = in.readLine();
-         String newLoginQuery = "UPDATE Users SET login = '" + newLogin + "' WHERE login = '" + authorizedUser + "';";
+        System.out.println("|Enter user you want to update login:");
+        String userUpdate = in.readLine();
+
+        System.out.println("|Enter the new login name:");
+        String newUserLogin = in.readLine();
+
+        //update the rentalOrder table first before updating the user to maintain the foreign keys
+        String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+        esql.executeUpdate(newLoginQuery);
       }catch(Exception e){
          System.err.println (e.getMessage());
       }

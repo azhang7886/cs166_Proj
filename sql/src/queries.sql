@@ -112,3 +112,10 @@ WHERE login =  ;
  UPDATE Users
  SET login =  
  WHERE login =  ;
+
+ /* 
+  * update a user's login for rental Orders 
+  */
+ UPDATE RentalOrder
+ SET login =
+ WHERE login =  ;
