@@ -1160,21 +1160,14 @@ public class GameRental {
          String userUpdate = in.readLine();
 
          System.out.println("|Set user role to customer, employee, or manager:");
-         String newUserLogin = in.readLine();
-         if () {
-
-         }
-         else if () {
-
-         }
-         else if () {
-
+         String newRole = in.readLine();
+         if (newRole.trim().equals("customer") || newRole.trim().equals("employee") || newRole.trim().equals("manager")) {
+            String newLoginQuery = "UPDATE Users SET role = '" + newRole + "' WHERE login = '" + userUpdate + "';";
+            esql.executeUpdate(newLoginQuery);
          }
          else {
-            System.out.println("Invalid input . . . returning to main menu")
+            System.out.println("Invalid input . . . returning to main menu");
          }
-         String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
-         esql.executeUpdate(newLoginQuery);
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
