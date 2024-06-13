@@ -1107,19 +1107,21 @@ public class GameRental {
          List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
          String userRole = roleQuery.get(0).get(0);
          System.out.println(userRole);
-         if (userRole.trim().equals("manager")) {
+         if (userRole.trim().equals("manager") || userRole.trim().equals("manager")) {
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("|                 o                 |");
             System.out.println("=====================================");
-            System.out.println("|     Update a Customer's Profile   |");
+            System.out.println("|        Update Tracking Info       |");
             System.out.println("=====================================");
             System.out.println("|                                   |");
-            System.out.println("| 1.       Update login          |");
+            System.out.println("| 1.       Update status          |");
             System.out.println("|                                   |");
-            System.out.println("| 2.      Update role       |");
+            System.out.println("| 2.      Update current location       |");
             System.out.println("|                                   |");
-            System.out.println("| 3.     Update number of overdue games      |");
+            System.out.println("| 3.     Update courrier name      |");
+            System.out.println("|                                   |");
+            System.out.println("| 4.     Add additional comments      |");
             System.out.println("|                                   |");
             System.out.println("|-----------------------------------|");
             // System.out.println("|      Please make your choice:     |");
