@@ -1131,7 +1131,7 @@ public class GameRental {
                case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
                case 2: workerUpdateRole(esql, trackingIdUpdate); break;
                case 3: updateOverdueGames(esql, trackingIdUpdate); break;
-               case 4: addAdditionalComments(); break;
+               // case 4: addAdditionalComments(); break;
             }
          }
          else {
@@ -1154,15 +1154,17 @@ public class GameRental {
          System.out.println("8. change to:  Returned to Sender.");
          switch(readChoice()) {
                case 1: 
-                  String update1 = " UPDATE TrackingInfo SET role = Out for Delivery WHERE trackingID = trackingIdUpdate;"; 
+                  String case1 = "Out for Delivery";
+                  String update1 = "UPDATE TrackingInfo SET status = '" + case1 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update1); 
                   break;
                case 2: workerUpdateRole(esql, trackingIdUpdate); break;
                case 3: updateOverdueGames(esql, trackingIdUpdate); break;
-               case 4: addAdditionalComments(); break;
-               case 5: addAdditionalComments(); break;
-               case 6: addAdditionalComments(); break;
-               case 7: addAdditionalComments(); break;
-               case 8: addAdditionalComments(); break;
+               // case 4: addAdditionalComments(); break;
+               // case 5: addAdditionalComments(); break;
+               // case 6: addAdditionalComments(); break;
+               // case 7: addAdditionalComments(); break;
+               // case 8: addAdditionalComments(); break;
             }
       }catch(Exception e){
          System.err.println (e.getMessage());
