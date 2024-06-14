@@ -1130,7 +1130,7 @@ public class GameRental {
             switch(readChoice()) {
                case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
                case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
-               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
+               case 3: updateCourierName(esql, trackingIdUpdate); break;
                // case 4: addAdditionalComments(); break;
             }
          }
@@ -1206,6 +1206,17 @@ public class GameRental {
          String newLocation = in.readLine();
          String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
          esql.executeUpdate(updateLocation);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void updateCourierName(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Insert new courier name:");
+         String newName = in.readLine();
+         String updateName = "UPDATE TrackingInfo SET courierName = '" + newName + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateName);
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
