@@ -1191,20 +1191,20 @@ public class GameRental {
          String userRole = roleQuery.get(0).get(0);
          System.out.println(userRole);
          if (userRole.trim().equals("manager")) {
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("=====================================");
-            System.out.println("|     Update a Customer's Profile   |");
-            System.out.println("=====================================");
-            System.out.println("|                                   |");
-            System.out.println("| 1.       Update login          |");
-            System.out.println("|                                   |");
-            System.out.println("| 2.      Update role       |");
-            System.out.println("|                                   |");
-            System.out.println("| 3.     Update number of overdue games      |");
-            System.out.println("|                                   |");
-            System.out.println("|-----------------------------------|");
+            System.out.println("|                           o                         |");
+            System.out.println("|                           o                         |");
+            System.out.println("|                           o                         |");
+            System.out.println("=======================================================");
+            System.out.println("|             Update a Customer's Profile             |");
+            System.out.println("=======================================================");
+            System.out.println("|                                                     |");
+            System.out.println("| 1.                  Update login                    |");
+            System.out.println("|                                                     |");
+            System.out.println("| 2.                  Update role                     |");
+            System.out.println("|                                                     |");
+            System.out.println("| 3.       Update number of overdue games             |");
+            System.out.println("|                                                     |");
+            System.out.println("|-----------------------------------------------------|");
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: workerUpdateLogin(esql, authorisedUser); break;
