@@ -154,10 +154,17 @@ WHERE login =  ;
  SET courierName = 
  WHERE trackingID =  ;
 
-  /* 
+ /* 
   * updating comments
   * MANAGER/EMPLOYEE ONLY
   */
  UPDATE TrackingInfo
  SET additionalComments = 
  WHERE trackingID = ;
+
+ /* 
+  * Check to see if the trackingID actually exists
+  */
+  SELECT *
+  FROM TrackingInfo
+  WHERE trackingID = ;

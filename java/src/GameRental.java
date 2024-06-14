@@ -1102,46 +1102,51 @@ public class GameRental {
     }
   }
 
-   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {
-      try {
-         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
-         List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
-         String userRole = roleQuery.get(0).get(0);
-         System.out.println(userRole);
-         if (userRole.trim().equals("manager") || userRole.trim().equals("manager")) {
-            System.out.println("Enter tracking ID you would like to update");
-            String trackingIdUpdate = in.readLine();
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("=====================================");
-            System.out.println("|        Update Tracking Info       |");
-            System.out.println("=====================================");
-            System.out.println("|                                   |");
-            System.out.println("| 1.       Update status          |");
-            System.out.println("|                                   |");
-            System.out.println("| 2.      Update current location       |");
-            System.out.println("|                                   |");
-            System.out.println("| 3.     Update courrier name      |");
-            System.out.println("|                                   |");
-            System.out.println("| 4.     Add additional comments      |");
-            System.out.println("|                                   |");
-            System.out.println("|-----------------------------------|");
-            // System.out.println("|      Please make your choice:     |");
-            switch(readChoice()) {
-               case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
-               case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
-               case 3: updateCourierName(esql, trackingIdUpdate); break;
-               case 4: addAdditionalComments(esql, trackingIdUpdate); break;
-            }
-         }
-         else {
-            System.out.println("You do not have permissions to edit");
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+  public static void updateTrackingInfo(GameRental esql,String authorisedUser) {
+    try {
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println("Enter tracking ID you would like to update");
+      String trackingIdUpdate = in.readLine();
+      String queryCheck = "SELECT * FROM TrackingInfo WHERE trackingID = '" + trackingIdUpdate + "';";
+      int exist = esql.executeQuery(queryCheck);
+
+      if (exist == 0) {
+        System.out.println("No tracking info exists for selected tracking ID");
       }
-   }
+      else if (userRole.trim().equals("manager") || userRole.trim().equals("employee")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|        Update Tracking Info       |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update status          |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update current location       |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update courrier name      |");
+        System.out.println("|                                   |");
+        System.out.println("| 4.     Add additional comments      |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+            case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
+            case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
+            case 3: updateCourierName(esql, trackingIdUpdate); break;
+            case 4: addAdditionalComments(esql, trackingIdUpdate); break;
+        }
+      }
+      else {
+        System.out.println("You do not have permissions to edit");
+      }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
   public static void updateTrackingStatus(GameRental esql, String trackingIdUpdate) {
     try {
       System.out.println("Options . . .");
