@@ -337,20 +337,20 @@ public class GameRental {
             System.out.println("|              Employee and Managers Access*          |");
             System.out.println("|-----------------------------------------------------|");
             System.out.println("|                                                     |");
-            System.out.println("|             9. Update Tracking Information          |");
+            System.out.println("|           9. Update Tracking Information            |");
             System.out.println("|                                                     |");
             System.out.println("|                                                     |");
 
             //the following functionalities basically used by managers
             System.out.println("|-----------------------------------------------------|");
-            System.out.println("|                     Managers Access*                |");
-            System.out.println("|------------------------------------------------------|");
+            System.out.println("|                   Managers Access*                  |");
+            System.out.println("|-----------------------------------------------------|");
             System.out.println("|                                                     |");
-            System.out.println("|                    10. Update Catalog               |");
-            System.out.println("|                    11. Update User                  |");
+            System.out.println("|                  10. Update Catalog                 |");
+            System.out.println("|                  11. Update User                    |");
             System.out.println("|                                                     |");
             System.out.println("|-----------------------------------------------------|");
-            System.out.println("|------------------------------------------------------|");
+            System.out.println("|-----------------------------------------------------|");
             System.out.println("|                                                     |");
             System.out.println("|                    20. Log out                      |");
             System.out.println("|                                                     |");
@@ -474,7 +474,7 @@ public class GameRental {
     // returns only if a correct value is given.
     do {
       System.out.println("|                           o                         |");
-      System.out.println("|                Please make your choice:             |");
+      System.out.println("|               Please make your choice:              |");
       System.out.println("|                           o                         |");
       try { // read the integer, parse it and break. 
         input = Integer.parseInt(in.readLine());
@@ -582,9 +582,9 @@ public class GameRental {
       System.out.println("|                           o                         |");
       System.out.println("|                           o                         |");
       System.out.println("|                           o                         |");
-      System.out.println(" ====================================");
-      System.out.println("|              My Profile            |");
-      System.out.println(" ====================================");
+      System.out.println("=======================================================");
+      System.out.println("|                       My Profile                    |");
+      System.out.println("=======================================================");
       System.out.println("| Login: " + user.get(0));
       System.out.println("| Password: " + user.get(1));
       System.out.println("| Role: " + user.get(2));
@@ -602,20 +602,20 @@ public class GameRental {
 
   public static void updateProfile(GameRental esql, String authorisedUser) {
     try {
-      System.out.println("|                          o                         |");
+      System.out.println("|                           o                         |");
       System.out.println("|                           o                         |");
       System.out.println("|                           o                         |");
       System.out.println("======================================================");
-      System.out.println("|                  Update Your Profile               |");
-      System.out.println("===================================================== ");
-      System.out.println("|                                                    |");
-      System.out.println("| 1.                Update password                  |");
-      System.out.println("|                                                    |");
-      System.out.println("| 2.               Update phone number               |");
-      System.out.println("|                                                    |");
-      System.out.println("| 3.              Update favorite games              |");
-      System.out.println("|                                                    |");
-      System.out.println("|----------------------------------------------------|");
+      System.out.println("|                  Update Your Profile                |");
+      System.out.println("======================================================");
+      System.out.println("|                                                     |");
+      System.out.println("| 1.                Update password                   |");
+      System.out.println("|                                                     |");
+      System.out.println("| 2.               Update phone number                |");
+      System.out.println("|                                                     |");
+      System.out.println("| 3.              Update favorite games               |");
+      System.out.println("|                                                     |");
+      System.out.println("|-----------------------------------------------------|");
       switch (readChoice()) {
       case 1:
         updatePassword(esql, authorisedUser);
@@ -706,8 +706,8 @@ public class GameRental {
       System.out.println("|                           o                         |");
       System.out.println("|                    Password updated!                |");
       System.out.println("|                           o                         |");
-      System.out.println("|                            o                         |");
-      System.out.println("|                            o                         |");
+      System.out.println("|                           o                         |");
+      System.out.println("|                           o                         |");
       System.out.println("| Press any key to return to the homepage...");
       in.readLine(); // Wait for the user to press Enter or any key
     } catch (Exception e) {
