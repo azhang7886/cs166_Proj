@@ -153,3 +153,11 @@ WHERE login =  ;
  UPDATE TrackingInfo 
  SET courierName = 
  WHERE trackingID =  ;
+
+  /* 
+  * updating comments
+  * MANAGER/EMPLOYEE ONLY
+  */
+ UPDATE TrackingInfo
+ SET additionalComments = 
+ WHERE trackingID = ;

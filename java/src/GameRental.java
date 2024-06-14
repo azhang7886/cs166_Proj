@@ -1224,7 +1224,16 @@ public class GameRental {
   }
 
   public static void addAdditionalComments(GameRental esql, String trackingIdUpdate) {
+    try {
+      System.out.println("Add new comments: ");
+      String newText = in.readLine();
 
+      String commentsQuery = "UPDATE TrackingInfo SET additionalComments = '" + newText + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+      esql.executeUpdate(commentsQuery);
+      
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
   }
 
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
