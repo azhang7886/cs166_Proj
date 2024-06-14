@@ -137,3 +137,19 @@ WHERE login =  ;
  UPDATE TrackingInfo 
  SET role = 
  WHERE trackingID =  ;
+
+  /* 
+  * updating current location
+  * MANAGER/EMPLOYEE ONLY
+  */
+ UPDATE TrackingInfo 
+ SET currentLocation = 
+ WHERE trackingID =  ;
+
+  /* 
+  * updating courier name
+  * MANAGER/EMPLOYEE ONLY
+  */
+ UPDATE TrackingInfo 
+ SET courierName = 
+ WHERE trackingID =  ;

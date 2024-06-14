@@ -1129,8 +1129,8 @@ public class GameRental {
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
-               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
-               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
+               case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
+               case 3: updateCourierName(esql, trackingIdUpdate); break;
                // case 4: addAdditionalComments(); break;
             }
          }
@@ -1158,14 +1158,65 @@ public class GameRental {
                   String update1 = "UPDATE TrackingInfo SET status = '" + case1 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
                   esql.executeUpdate(update1); 
                   break;
-               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
-               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
-               // case 4: addAdditionalComments(); break;
-               // case 5: addAdditionalComments(); break;
-               // case 6: addAdditionalComments(); break;
-               // case 7: addAdditionalComments(); break;
-               // case 8: addAdditionalComments(); break;
+               case 2: 
+                  String case2 = "Delivered";
+                  String update2 = "UPDATE TrackingInfo SET status = '" + case2 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update2); 
+                  break;
+               case 3: 
+                  String case3 = "In Transit";
+                  String update3 = "UPDATE TrackingInfo SET status = '" + case3 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update3); 
+                  break;
+               case 4: 
+                  String case4 = "Delayed";
+                  String update4 = "UPDATE TrackingInfo SET status = '" + case4 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update4); 
+                  break;
+               case 5: 
+                  String case5 = "Ready for Pickup";
+                  String update5 = "UPDATE TrackingInfo SET status = '" + case5 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update5); 
+                  break;
+               case 6: 
+                  String case6 = "Attempted Delivery";
+                  String update6 = "UPDATE TrackingInfo SET status = '" + case6 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update6); 
+                  break;
+               case 7: 
+                  String case7 = "Arrived at Facility";
+                  String update7 = "UPDATE TrackingInfo SET status = '" + case7 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update7); 
+                  break;
+               case 8: 
+                  String case8 = "Returned to Sender";
+                  String update8 = "UPDATE TrackingInfo SET status = '" + case8 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+                  esql.executeUpdate(update8); 
+                  break;
             }
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Insert new location:");
+         System.out.println("(Format: city,State. Ex: Austin,TX)");
+         String newLocation = in.readLine();
+         String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateLocation);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void updateCourierName(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Insert new courier name:");
+         String newName = in.readLine();
+         String updateName = "UPDATE TrackingInfo SET courierName = '" + newName + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateName);
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
