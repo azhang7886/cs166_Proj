@@ -1230,99 +1230,101 @@ public class GameRental {
 
       String commentsQuery = "UPDATE TrackingInfo SET additionalComments = '" + newText + "' WHERE trackingID = '" + trackingIdUpdate + "';";
       esql.executeUpdate(commentsQuery);
-      
+
     } catch (Exception e) {
       System.err.println(e.getMessage());
     }
   }
 
-   public static void updateCatalog(GameRental esql,String authorisedUser) {}
-   public static void updateUser(GameRental esql, String authorisedUser) {
-      try {
-         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
-         List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
-         String userRole = roleQuery.get(0).get(0);
-         System.out.println(userRole);
-         if (userRole.trim().equals("manager")) {
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("=====================================");
-            System.out.println("|     Update a Customer's Profile   |");
-            System.out.println("=====================================");
-            System.out.println("|                                   |");
-            System.out.println("| 1.       Update login          |");
-            System.out.println("|                                   |");
-            System.out.println("| 2.      Update role       |");
-            System.out.println("|                                   |");
-            System.out.println("| 3.     Update number of overdue games      |");
-            System.out.println("|                                   |");
-            System.out.println("|-----------------------------------|");
-            // System.out.println("|      Please make your choice:     |");
-            switch(readChoice()) {
-               case 1: workerUpdateLogin(esql, authorisedUser); break;
-               case 2: workerUpdateRole(esql, authorisedUser); break;
-               case 3: updateOverdueGames(esql, authorisedUser); break;
-            }
-         }
-         else {
-            System.out.println("You do not have permissions to edit");
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+  public static void updateCatalog(GameRental esql,String authorisedUser) {
+    
+  }
+
+  public static void updateUser(GameRental esql, String authorisedUser) {
+    try {
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println(userRole);
+      if (userRole.trim().equals("manager")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|     Update a Customer's Profile   |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update login          |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update role       |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update number of overdue games      |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+            case 1: workerUpdateLogin(esql, authorisedUser); break;
+            case 2: workerUpdateRole(esql, authorisedUser); break;
+            case 3: updateOverdueGames(esql, authorisedUser); break;
+        }
       }
-   }
+      else {
+        System.out.println("You do not have permissions to edit");
+      }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
 
-   public static void workerUpdateLogin(GameRental esql, String authorisedUser) {
-      try {
-        System.out.println("|Enter user you want to update login:");
-        String userUpdate = in.readLine();
+  public static void workerUpdateLogin(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update login:");
+      String userUpdate = in.readLine();
 
-        System.out.println("|Enter the new login name:");
-        String newUserLogin = in.readLine();
+      System.out.println("|Enter the new login name:");
+      String newUserLogin = in.readLine();
 
-        String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+      String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+      esql.executeUpdate(newLoginQuery);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+
+  public static void workerUpdateRole(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update role:");
+      String userUpdate = in.readLine();
+
+      System.out.println("|Set user role to customer, employee, or manager:");
+      String newRole = in.readLine();
+      if (newRole.trim().equals("customer") || newRole.trim().equals("employee") || newRole.trim().equals("manager")) {
+        String newLoginQuery = "UPDATE Users SET role = '" + newRole + "' WHERE login = '" + userUpdate + "';";
         esql.executeUpdate(newLoginQuery);
-      }catch(Exception e){
-         System.err.println (e.getMessage());
       }
-   }
-
-   public static void workerUpdateRole(GameRental esql, String authorisedUser) {
-      try {
-         System.out.println("|Enter user you want to update role:");
-         String userUpdate = in.readLine();
-
-         System.out.println("|Set user role to customer, employee, or manager:");
-         String newRole = in.readLine();
-         if (newRole.trim().equals("customer") || newRole.trim().equals("employee") || newRole.trim().equals("manager")) {
-            String newLoginQuery = "UPDATE Users SET role = '" + newRole + "' WHERE login = '" + userUpdate + "';";
-            esql.executeUpdate(newLoginQuery);
-         }
-         else {
-            System.out.println("Invalid input. Press any key to return to the main menu.");
-            in.readLine();
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      else {
+        System.out.println("Invalid input. Press any key to return to the main menu.");
+        in.readLine();
       }
-   }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
 
-   public static void updateOverdueGames(GameRental esql, String authorisedUser) {
-      try {
-         System.out.println("|Enter user you want to update number of overdue games:");
-         String userUpdate = in.readLine();
+  public static void updateOverdueGames(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update number of overdue games:");
+      String userUpdate = in.readLine();
 
-         System.out.println("|Enter number of overdue games:");
-         Integer newNumber = Integer.valueOf(in.readLine());
+      System.out.println("|Enter number of overdue games:");
+      Integer newNumber = Integer.valueOf(in.readLine());
 
-         String newLoginQuery = "UPDATE Users SET numOverdueGames = '" + newNumber + "' WHERE login = '" + userUpdate + "';";
-         esql.executeUpdate(newLoginQuery);
-
-      }catch(Exception e){
-         System.err.println (e.getMessage());
-      }   
-   }
+      String newLoginQuery = "UPDATE Users SET numOverdueGames = '" + newNumber + "' WHERE login = '" + userUpdate + "';";
+      esql.executeUpdate(newLoginQuery);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }   
+  }
 
 }//end GameRental
 
