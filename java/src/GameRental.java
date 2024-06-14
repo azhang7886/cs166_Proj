@@ -1129,7 +1129,7 @@ public class GameRental {
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
-               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
+               case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
                case 3: updateOverdueGames(esql, trackingIdUpdate); break;
                // case 4: addAdditionalComments(); break;
             }
@@ -1197,6 +1197,10 @@ public class GameRental {
       }catch(Exception e){
          System.err.println (e.getMessage());
       }
+   }
+
+   public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
+      
    }
 
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
