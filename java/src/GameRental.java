@@ -300,7 +300,7 @@ public class GameRental {
           System.out.println("|                           o                         |");
           System.out.println("|                           o                         |");
           System.out.println("|                    Successful Login!                |");
-          System.out.println("|                     Loading Homepage                |");
+          System.out.println("|                    Loading Homepage                 |");
           System.out.println("|                           o                         |");
           System.out.println("|                           o                         |");
           System.out.println("|                           o                         |");
@@ -991,21 +991,33 @@ public class GameRental {
 
   public static void viewAllOrders(GameRental esql, String authorisedUser) {
     try {
-      System.out.println("=======================================================");
-      System.out.println("|             Viewing All Previous Orders             |");
-      System.out.println("=======================================================");
-      System.out.println("|                                                     |");
-      System.out.println("|                                                     |");
+        System.out.println("=======================================================");
+        System.out.println("|             Viewing All Previous Orders             |");
+        System.out.println("=======================================================");
+        System.out.println("|                                                     |");
 
-      String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "';";
-      esql.executeQueryAndPrintResult(query);
-      System.out.println("|                                                     |");
-      System.out.println("|                                                     |");
-      System.out.println("=======================================================");
+        String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "';";
+        List<List<String>> result = esql.executeQueryAndReturnResult(query);
+
+        if (result.isEmpty()) {
+            System.out.println("|            No previous orders found                 |");
+        } else {
+            System.out.println("| Order ID | No. of Games | Total Price | Order Date | Due Date |");
+            System.out.println("|-----------------------------------------------------|");
+
+            for (List<String> row : result) {
+                System.out.printf("| %-8s | %-12s | %-11s | %-10s | %-9s |\n", 
+                                  row.get(0), row.get(1), row.get(2), row.get(3), row.get(4));
+            }
+        }
+
+        System.out.println("|                                                     |");
+        System.out.println("=======================================================");
     } catch (Exception e) {
-      System.err.println(e.getMessage());
+        System.err.println(e.getMessage());
     }
   }
+
   public static void viewRecentOrders(GameRental esql, String authorisedUser) {
     try {
       System.out.println("=======================================================");
