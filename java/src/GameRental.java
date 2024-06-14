@@ -1200,7 +1200,15 @@ public class GameRental {
    }
 
    public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
-      
+      try {
+         System.out.println("Insert new location:");
+         System.our.println("(Format: city,State. Ex: Austin,TX)");
+         String newLocation = in.readLine();
+         String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateLocation);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
    }
 
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
