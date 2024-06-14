@@ -549,6 +549,7 @@ public class GameRental {
       if (userExists > 0) {
         return login;
       } else {
+        System.out.println("User does not exist");
         return null;
       }
     } catch (Exception e) {
@@ -1066,13 +1067,13 @@ public class GameRental {
         System.out.println("=======================================================");
         String trackingID = in.readLine();
 
-        String query = "SELECT courierName, rentalOrderID, currentLocation, status, lastUpdateDate, additionalComments " +
-          "FROM TrackingInfo WHERE trackingID = '" + trackingID + "';";
-        List < List < String >> result = esql.executeQueryAndReturnResult(query);
+        String query = "SELECT T.courierName, T.rentalOrderID, T.currentLocation, T.status, T.lastUpdateDate, T.additionalComments " +
+          "FROM TrackingInfo T, RentalOrder R WHERE trackingID = '" + trackingID + "'" + 
+          " AND T.rentalOrderID = R.rentalOrderID AND R.login = '" + authorisedUser + "';";
+        int resultCheck = esql.executeQuery(query);
 
-        if (result.isEmpty()) {
-          System.out.println("No tracking information found for trackingID: " + trackingID);
-        } else {
+        if (resultCheck > 0) {
+          List < List < String >> result = esql.executeQueryAndReturnResult(query);
           List < String > trackingInfo = result.get(0);
           System.out.println("=======================================================");
           System.out.println("|                 Tracking Information                |");
@@ -1084,6 +1085,8 @@ public class GameRental {
           System.out.println("| Last Updated Date: " + trackingInfo.get(4));
           System.out.println("| Additional Comments: " + trackingInfo.get(5));
           System.out.println("=======================================================");
+        } else {
+          System.out.println("No tracking information for/no permission to view trackingID: " + trackingID);
         }
 
         // Prompt user to enter another tracking ID or quit
