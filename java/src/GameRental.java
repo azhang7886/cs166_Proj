@@ -1242,10 +1242,112 @@ public class GameRental {
   }
 
   public static void updateCatalog(GameRental esql,String authorisedUser) {
-    
+    try{
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println("Enter game ID you would like to update");
+      String gameIdUpdate = in.readLine();
+      String queryCheck = "SELECT * FROM TrackingInfo WHERE trackingID = '" + gameIdUpdate + "';";
+      int exist = esql.executeQuery(queryCheck);
+
+      if (exist == 0) {
+        System.out.println("Game does not exist in catalog");
+      }
+      else if (userRole.trim().equals("manager")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|           Update a Game           |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update game name         |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update genre              |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update price               |");
+        System.out.println("|                                   |");
+        System.out.println("| 4.     Update description         |");
+        System.out.println("|                                   |");
+        System.out.println("| 5.     Update imageURL            |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+          case 1: updateGameName(esql, gameIdUpdate); break;
+          case 2: updateGenre(esql, gameIdUpdate); break;
+          case 3: updatePrice(esql, gameIdUpdate); break;
+          case 4: updateDescription(esql, gameIdUpdate); break;
+          case 5: updateImage(esql, gameIdUpdate); break;  
+        }
+      }
+      else {
+        System.out.println("You do not have permissions to edit");
+      }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
   }
 
-  public static void updateUser(GameRental esql, String authorisedUser) {
+  public static void updateGameName(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new game name: ");
+      String newName = in.readLine();
+
+      String query = " UPDATE Catalog SET gameName = '" + newName + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+
+  public static void updateGenre(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new cost: ");
+      String newGenre = in.readLine();
+
+      String query = " UPDATE Catalog SET genre = '" + newGenre + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updatePrice(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new price: ");
+      String newPrice = in.readLine();
+      Float costNum = Float.parseFloat(newPrice);
+      String query = " UPDATE Catalog SET price = '" + costNum + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updateDescription(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new description: ");
+      String newDescription = in.readLine();
+
+      String query = " UPDATE Catalog SET description = '" + newDescription + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updateImage(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new image URL: ");
+      String newURL = in.readLine();
+
+      String query = " UPDATE Catalog SET imageURL = '" + newURL + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+
+  public static void updateUser(GameRental esql, String ) {
     try {
       String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
       List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);

@@ -168,3 +168,27 @@ WHERE login =  ;
   SELECT *
   FROM TrackingInfo
   WHERE trackingID = ;
+
+ /* 
+  * Update game name
+  * MANAGER ONLY
+  */
+ UPDATE Catalog
+ SET gameName = 
+ WHERE gameID = ;
+
+  /* 
+  * Update genre name
+  * MANAGER ONLY
+  */
+ UPDATE Catalog
+ SET genre = 
+ WHERE gameID = ;
+
+ /* 
+  * Update genre name
+  * MANAGER ONLY
+  */
+ UPDATE Catalog
+ SET price = 
+ WHERE gameID = ;
