@@ -945,7 +945,7 @@ public class GameRental {
       // Collect game information
       List < String > gameIds = new ArrayList < > ();
       List < Integer > numCopiesList = new ArrayList < > ();
-      Float totalCost = 0.0 f;
+      Float totalCost = 0.0f;
 
       for (int i = 0; i < numOfGames; i++) {
         System.out.println("Insert the game ID of the game you want to order");
