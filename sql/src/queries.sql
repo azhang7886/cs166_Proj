@@ -70,7 +70,7 @@ WHERE login =  ;
   */
  SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID
  FROM RentalOrder R, TrackingInfo T, GamesInOrder G
- WHERE R.login =  AND R.rentalOrderID =  AND R.rentalOrderID = G.rentalOrderID AND R.rentalOrderID = T.rentalOrderID;
+ WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + trimOrderId + "' AND R.rentalOrderID = T.rentalOrderID;
 
   /* 
   * View the games for a specific renatal order
@@ -192,3 +192,9 @@ WHERE login =  ;
  UPDATE Catalog
  SET price = 
  WHERE gameID = ;
+
+ /* 
+  * Insert into Tracking
+  */
+ INSERT INTO TrackingInfo
+ VALUES (trackingID, rentalOrderID, 'Out for Delivery', 'DHL', 'Bob', lastUpdateDate, '');

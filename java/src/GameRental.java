@@ -940,6 +940,14 @@ public class GameRental {
       Integer lastOrderId_1 = lastOrderId + 1;
       String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
 
+
+      String getLastTracking = "SELECT trackingID FROM TrackingInfo ORDER BY trackingID DESC LIMIT 1;";
+      List < List < String >> getEnd = esql.executeQueryAndReturnResult(getLastTracking);
+      String endID = getEnd.get(0).get(0);
+      Integer lastTrackingId = Integer.valueOf(endID.substring(endID.length() - 4));
+      Integer lastTrackingId_1 = lastTrackingId + 2;
+      String newTrackingId = "trackingid" + String.valueOf(lastTrackingId_1);
+
       System.out.println("How many games do you want to order?");
       Integer numOfGames = Integer.valueOf(in.readLine());
 
@@ -973,6 +981,12 @@ public class GameRental {
 
       String putIntoRentalOrder = "INSERT INTO RentalOrder(rentalOrderID, login, noOfGames, totalPrice, orderTimestamp, dueDate) VALUES ('" + newOrderId + "', '" + authorisedUser + "', '" + numOfGames + "', '" + totalCost + "', '" + currTime + "', '" + dateDue + "');";
       esql.executeUpdate(putIntoRentalOrder);
+
+      // Then insert into TrackingOrder
+      String putIntoTrackingOrder = "INSERT INTO TrackingInfo(trackingID, rentalOrderID, status, currentLocation, courierName, lastUpdateDate, additionalComments) VALUES ('" + newTrackingId + "', '" + newOrderId + "', 'Out for Delivery', 'DHL', 'Bob', '" + currTime + "', '');";
+      esql.executeUpdate(putIntoTrackingOrder);
+      List<List<String>> help = esql.executeQueryAndReturnResult(putIntoTrackingOrder);
+      System.out.println(help.get(0).get(0));
 
       // Now insert the games into GamesInOrder
       for (int i = 0; i < numOfGames; i++) {
@@ -1036,9 +1050,11 @@ public class GameRental {
       System.out.println("=======================================================");
 
       String orderId = in.readLine();
-      String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "'  AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
-      String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T, GamesInOrder G WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = G.rentalOrderID AND R.rentalOrderID = T.rentalOrderID;";
+      String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
+      String queryInfo = "SELECT T.trackingID FROM TrackingInfo T WHERE T.rentalOrderID = '" + orderId + "';";
+      // String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND T.rentalOrderID = '" + orderId + "';";
       List < List < String >> info = esql.executeQueryAndReturnResult(queryInfo);
+      System.out.println(info);
       List < String > order = info.get(0);
       List < List < String >> game = esql.executeQueryAndReturnResult(queryGames);
       System.out.println("=======================================================");
@@ -1248,7 +1264,7 @@ public class GameRental {
       String userRole = roleQuery.get(0).get(0);
       System.out.println("Enter game ID you would like to update");
       String gameIdUpdate = in.readLine();
-      String queryCheck = "SELECT * FROM TrackingInfo WHERE trackingID = '" + gameIdUpdate + "';";
+      String queryCheck = "SELECT * FROM Catalog WHERE gameID = '" + gameIdUpdate + "';";
       int exist = esql.executeQuery(queryCheck);
 
       if (exist == 0) {
@@ -1347,7 +1363,7 @@ public class GameRental {
     }
   }
 
-  public static void updateUser(GameRental esql, String ) {
+  public static void updateUser(GameRental esql, String authorisedUser) {
     try {
       String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
       List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
