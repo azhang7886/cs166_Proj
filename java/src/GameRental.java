@@ -989,25 +989,27 @@ public class GameRental {
     }
   }
 
-  public static void viewAllOrders(GameRental esql, String authorisedUser) {
+  public static void viewRecentOrders(GameRental esql, String authorisedUser) {
     try {
         System.out.println("=======================================================");
-        System.out.println("|             Viewing All Previous Orders             |");
+        System.out.println("|            Viewing 5 Most Recent Orders             |");
         System.out.println("=======================================================");
         System.out.println("|                                                     |");
 
-        String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder WHERE login = '" + authorisedUser + "';";
+        String query = "SELECT rentalOrderID, noOfGames, totalPrice, orderTimestamp, dueDate FROM RentalOrder " +
+                       "WHERE login = '" + authorisedUser + "' ORDER BY orderTimestamp DESC LIMIT 5;";
         List<List<String>> result = esql.executeQueryAndReturnResult(query);
 
         if (result.isEmpty()) {
-            System.out.println("|            No previous orders found                 |");
+            System.out.println("|          No recent orders found.                    |");
         } else {
-            System.out.println("| Order ID | No. of Games | Total Price | Order Date | Due Date |");
-            System.out.println("|-----------------------------------------------------|");
-
             for (List<String> row : result) {
-                System.out.printf("| %-8s | %-12s | %-11s | %-10s | %-9s |\n", 
-                                  row.get(0), row.get(1), row.get(2), row.get(3), row.get(4));
+                System.out.println("| Order ID: " + row.get(0));
+                System.out.println("| Number of Games: " + row.get(1));
+                System.out.println("| Total Price: " + row.get(2));
+                System.out.println("| Order Timestamp: " + row.get(3));
+                System.out.println("| Due Date: " + row.get(4));
+                System.out.println("|-----------------------------------------------------|");
             }
         }
 
@@ -1017,6 +1019,7 @@ public class GameRental {
         System.err.println(e.getMessage());
     }
   }
+
 
   public static void viewAllOrders(GameRental esql, String authorisedUser) {
     try {
@@ -1155,8 +1158,8 @@ public class GameRental {
             // System.out.println("|      Please make your choice:     |");
             switch(readChoice()) {
                case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
-               case 2: workerUpdateRole(esql, trackingIdUpdate); break;
-               case 3: updateOverdueGames(esql, trackingIdUpdate); break;
+               case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
+               case 3: updateCourierName(esql, trackingIdUpdate); break;
                // case 4: addAdditionalComments(); break;
             }
          }
@@ -1238,6 +1241,28 @@ public class GameRental {
     }
    }
 
+   public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Insert new location:");
+         System.out.println("(Format: city,State. Ex: Austin,TX)");
+         String newLocation = in.readLine();
+         String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateLocation);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
+
+   public static void updateCourierName(GameRental esql, String trackingIdUpdate) {
+      try {
+         System.out.println("Insert new courier name:");
+         String newName = in.readLine();
+         String updateName = "UPDATE TrackingInfo SET courierName = '" + newName + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+         esql.executeUpdate(updateName);
+      }catch(Exception e){
+         System.err.println (e.getMessage());
+      }
+   }
 
    public static void updateCatalog(GameRental esql,String authorisedUser) {}
    public static void updateUser(GameRental esql, String authorisedUser) {
