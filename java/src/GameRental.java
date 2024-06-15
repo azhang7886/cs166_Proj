@@ -549,6 +549,7 @@ public class GameRental {
       if (userExists > 0) {
         return login;
       } else {
+        System.out.println("User does not exist");
         return null;
       }
     } catch (Exception e) {
@@ -939,6 +940,14 @@ public class GameRental {
       Integer lastOrderId_1 = lastOrderId + 1;
       String newOrderId = "gamerentalorder" + String.valueOf(lastOrderId_1);
 
+
+      String getLastTracking = "SELECT trackingID FROM TrackingInfo ORDER BY trackingID DESC LIMIT 1;";
+      List < List < String >> getEnd = esql.executeQueryAndReturnResult(getLastTracking);
+      String endID = getEnd.get(0).get(0);
+      Integer lastTrackingId = Integer.valueOf(endID.substring(endID.length() - 4));
+      Integer lastTrackingId_1 = lastTrackingId + 2;
+      String newTrackingId = "trackingid" + String.valueOf(lastTrackingId_1);
+
       System.out.println("How many games do you want to order?");
       Integer numOfGames = Integer.valueOf(in.readLine());
 
@@ -972,6 +981,12 @@ public class GameRental {
 
       String putIntoRentalOrder = "INSERT INTO RentalOrder(rentalOrderID, login, noOfGames, totalPrice, orderTimestamp, dueDate) VALUES ('" + newOrderId + "', '" + authorisedUser + "', '" + numOfGames + "', '" + totalCost + "', '" + currTime + "', '" + dateDue + "');";
       esql.executeUpdate(putIntoRentalOrder);
+
+      // Then insert into TrackingOrder
+      String putIntoTrackingOrder = "INSERT INTO TrackingInfo(trackingID, rentalOrderID, status, currentLocation, courierName, lastUpdateDate, additionalComments) VALUES ('" + newTrackingId + "', '" + newOrderId + "', 'Out for Delivery', 'DHL', 'Bob', '" + currTime + "', '');";
+      esql.executeUpdate(putIntoTrackingOrder);
+      List<List<String>> help = esql.executeQueryAndReturnResult(putIntoTrackingOrder);
+      System.out.println(help.get(0).get(0));
 
       // Now insert the games into GamesInOrder
       for (int i = 0; i < numOfGames; i++) {
@@ -1035,9 +1050,11 @@ public class GameRental {
       System.out.println("=======================================================");
 
       String orderId = in.readLine();
-      String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "'  AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
-      String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T, GamesInOrder G WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = G.rentalOrderID AND R.rentalOrderID = T.rentalOrderID;";
+      String queryGames = "SELECT C.gameName FROM RentalOrder R, TrackingInfo T, GamesInOrder G, Catalog C WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND R.rentalOrderID = T.rentalOrderID AND R.rentalOrderID = G.rentalOrderID AND G.gameID = C.gameID;";
+      String queryInfo = "SELECT T.trackingID FROM TrackingInfo T WHERE T.rentalOrderID = '" + orderId + "';";
+      // String queryInfo = "SELECT R.orderTimestamp, R.dueDate, R.totalPrice, T.trackingID FROM RentalOrder R, TrackingInfo T WHERE R.login = '" + authorisedUser + "' AND R.rentalOrderID = '" + orderId + "' AND T.rentalOrderID = '" + orderId + "';";
       List < List < String >> info = esql.executeQueryAndReturnResult(queryInfo);
+      System.out.println(info);
       List < String > order = info.get(0);
       List < List < String >> game = esql.executeQueryAndReturnResult(queryGames);
       System.out.println("=======================================================");
@@ -1066,13 +1083,13 @@ public class GameRental {
         System.out.println("=======================================================");
         String trackingID = in.readLine();
 
-        String query = "SELECT courierName, rentalOrderID, currentLocation, status, lastUpdateDate, additionalComments " +
-          "FROM TrackingInfo WHERE trackingID = '" + trackingID + "';";
-        List < List < String >> result = esql.executeQueryAndReturnResult(query);
+        String query = "SELECT T.courierName, T.rentalOrderID, T.currentLocation, T.status, T.lastUpdateDate, T.additionalComments " +
+          "FROM TrackingInfo T, RentalOrder R WHERE trackingID = '" + trackingID + "'" + 
+          " AND T.rentalOrderID = R.rentalOrderID AND R.login = '" + authorisedUser + "';";
+        int resultCheck = esql.executeQuery(query);
 
-        if (result.isEmpty()) {
-          System.out.println("No tracking information found for trackingID: " + trackingID);
-        } else {
+        if (resultCheck > 0) {
+          List < List < String >> result = esql.executeQueryAndReturnResult(query);
           List < String > trackingInfo = result.get(0);
           System.out.println("=======================================================");
           System.out.println("|                 Tracking Information                |");
@@ -1084,6 +1101,8 @@ public class GameRental {
           System.out.println("| Last Updated Date: " + trackingInfo.get(4));
           System.out.println("| Additional Comments: " + trackingInfo.get(5));
           System.out.println("=======================================================");
+        } else {
+          System.out.println("No tracking information for/no permission to view trackingID: " + trackingID);
         }
 
         // Prompt user to enter another tracking ID or quit
@@ -1099,216 +1118,336 @@ public class GameRental {
     }
   }
 
+  public static void updateTrackingInfo(GameRental esql,String authorisedUser) {
+    try {
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println("Enter tracking ID you would like to update");
+      String trackingIdUpdate = in.readLine();
+      String queryCheck = "SELECT * FROM TrackingInfo WHERE trackingID = '" + trackingIdUpdate + "';";
+      int exist = esql.executeQuery(queryCheck);
 
-   
-   public static void updateTrackingInfo(GameRental esql,String authorisedUser) {
-      try {
-         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
-         List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
-         String userRole = roleQuery.get(0).get(0);
-         System.out.println(userRole);
-         if (userRole.trim().equals("manager") || userRole.trim().equals("manager")) {
-            System.out.println("Enter tracking ID you would like to update");
-            String trackingIdUpdate = in.readLine();
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("=====================================");
-            System.out.println("|        Update Tracking Info       |");
-            System.out.println("=====================================");
-            System.out.println("|                                   |");
-            System.out.println("| 1.       Update status          |");
-            System.out.println("|                                   |");
-            System.out.println("| 2.      Update current location       |");
-            System.out.println("|                                   |");
-            System.out.println("| 3.     Update courrier name      |");
-            System.out.println("|                                   |");
-            System.out.println("| 4.     Add additional comments      |");
-            System.out.println("|                                   |");
-            System.out.println("|-----------------------------------|");
-            // System.out.println("|      Please make your choice:     |");
-            switch(readChoice()) {
-               case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
-               case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
-               case 3: updateCourierName(esql, trackingIdUpdate); break;
-               // case 4: addAdditionalComments(); break;
-            }
-         }
-         else {
-            System.out.println("You do not have permissions to edit");
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      if (exist == 0) {
+        System.out.println("No tracking info exists for selected tracking ID");
       }
-   }
-   public static void updateTrackingStatus(GameRental esql, String trackingIdUpdate) {
-      try {
-         System.out.println("Options . . .");
-         System.out.println("1. change to:  Out for Delivery.");
-         System.out.println("2. change to:  Delivered.");
-         System.out.println("3. change to:  In Transit.");
-         System.out.println("4. change to:  Delayed.");
-         System.out.println("5. change to:  Ready for Pickup.");
-         System.out.println("6. change to:  Attempted Delivery.");
-         System.out.println("7. change to:  Arrived at Facility.");
-         System.out.println("8. change to:  Returned to Sender.");
-         switch(readChoice()) {
-               case 1: 
-                  String case1 = "Out for Delivery";
-                  String update1 = "UPDATE TrackingInfo SET status = '" + case1 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update1); 
-                  break;
-               case 2: 
-                  String case2 = "Delivered";
-                  String update2 = "UPDATE TrackingInfo SET status = '" + case2 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update2); 
-                  break;
-               case 3: 
-                  String case3 = "In Transit";
-                  String update3 = "UPDATE TrackingInfo SET status = '" + case3 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update3); 
-                  break;
-               case 4: 
-                  String case4 = "Delayed";
-                  String update4 = "UPDATE TrackingInfo SET status = '" + case4 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update4); 
-                  break;
-               case 5: 
-                  String case5 = "Ready for Pickup";
-                  String update5 = "UPDATE TrackingInfo SET status = '" + case5 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update5); 
-                  break;
-               case 6: 
-                  String case6 = "Attempted Delivery";
-                  String update6 = "UPDATE TrackingInfo SET status = '" + case6 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update6); 
-                  break;
-               case 7: 
-                  String case7 = "Arrived at Facility";
-                  String update7 = "UPDATE TrackingInfo SET status = '" + case7 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update7); 
-                  break;
-               case 8: 
-                  String case8 = "Returned to Sender";
-                  String update8 = "UPDATE TrackingInfo SET status = '" + case8 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-                  esql.executeUpdate(update8); 
-                  break;
-            }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      else if (userRole.trim().equals("manager") || userRole.trim().equals("employee")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|        Update Tracking Info       |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update status          |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update current location       |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update courrier name      |");
+        System.out.println("|                                   |");
+        System.out.println("| 4.     Add additional comments      |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+            case 1: updateTrackingStatus(esql, trackingIdUpdate); break;
+            case 2: updateCurrentLocation(esql, trackingIdUpdate); break;
+            case 3: updateCourierName(esql, trackingIdUpdate); break;
+            case 4: addAdditionalComments(esql, trackingIdUpdate); break;
+        }
       }
-   }
-
-   public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
-      try {
-         System.out.println("Insert new location:");
-         System.out.println("(Format: city,State. Ex: Austin,TX)");
-         String newLocation = in.readLine();
-         String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-         esql.executeUpdate(updateLocation);
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      else {
+        System.out.println("You do not have permissions to edit");
       }
-   }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+  public static void updateTrackingStatus(GameRental esql, String trackingIdUpdate) {
+    try {
+      System.out.println("Options . . .");
+      System.out.println("1. change to:  Out for Delivery.");
+      System.out.println("2. change to:  Delivered.");
+      System.out.println("3. change to:  In Transit.");
+      System.out.println("4. change to:  Delayed.");
+      System.out.println("5. change to:  Ready for Pickup.");
+      System.out.println("6. change to:  Attempted Delivery.");
+      System.out.println("7. change to:  Arrived at Facility.");
+      System.out.println("8. change to:  Returned to Sender.");
+      switch(readChoice()) {
+        case 1: 
+          String case1 = "Out for Delivery";
+          String update1 = "UPDATE TrackingInfo SET status = '" + case1 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update1); 
+          break;
+        case 2: 
+          String case2 = "Delivered";
+          String update2 = "UPDATE TrackingInfo SET status = '" + case2 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update2); 
+          break;
+        case 3: 
+          String case3 = "In Transit";
+          String update3 = "UPDATE TrackingInfo SET status = '" + case3 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update3); 
+          break;
+        case 4: 
+          String case4 = "Delayed";
+          String update4 = "UPDATE TrackingInfo SET status = '" + case4 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update4); 
+          break;
+        case 5: 
+          String case5 = "Ready for Pickup";
+          String update5 = "UPDATE TrackingInfo SET status = '" + case5 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update5); 
+          break;
+        case 6: 
+          String case6 = "Attempted Delivery";
+          String update6 = "UPDATE TrackingInfo SET status = '" + case6 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update6); 
+          break;
+        case 7: 
+          String case7 = "Arrived at Facility";
+          String update7 = "UPDATE TrackingInfo SET status = '" + case7 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update7); 
+          break;
+        case 8: 
+          String case8 = "Returned to Sender";
+          String update8 = "UPDATE TrackingInfo SET status = '" + case8 + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+          esql.executeUpdate(update8); 
+          break;
+        }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
 
-   public static void updateCourierName(GameRental esql, String trackingIdUpdate) {
-      try {
-         System.out.println("Insert new courier name:");
-         String newName = in.readLine();
-         String updateName = "UPDATE TrackingInfo SET courierName = '" + newName + "' WHERE trackingID = '" + trackingIdUpdate + "';";
-         esql.executeUpdate(updateName);
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+  public static void updateCurrentLocation(GameRental esql, String trackingIdUpdate) {
+    try {
+        System.out.println("Insert new location:");
+        System.out.println("(Format: city,State. Ex: Austin,TX)");
+        String newLocation = in.readLine();
+        String updateLocation = "UPDATE TrackingInfo SET currentLocation = '" + newLocation + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+        esql.executeUpdate(updateLocation);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+
+  public static void updateCourierName(GameRental esql, String trackingIdUpdate) {
+    try {
+        System.out.println("Insert new courier name:");
+        String newName = in.readLine();
+        String updateName = "UPDATE TrackingInfo SET courierName = '" + newName + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+        esql.executeUpdate(updateName);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+
+  public static void addAdditionalComments(GameRental esql, String trackingIdUpdate) {
+    try {
+      System.out.println("Add new comments: ");
+      String newText = in.readLine();
+
+      String commentsQuery = "UPDATE TrackingInfo SET additionalComments = '" + newText + "' WHERE trackingID = '" + trackingIdUpdate + "';";
+      esql.executeUpdate(commentsQuery);
+
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+  }
+
+  public static void updateCatalog(GameRental esql,String authorisedUser) {
+    try{
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println("Enter game ID you would like to update");
+      String gameIdUpdate = in.readLine();
+      String queryCheck = "SELECT * FROM Catalog WHERE gameID = '" + gameIdUpdate + "';";
+      int exist = esql.executeQuery(queryCheck);
+
+      if (exist == 0) {
+        System.out.println("Game does not exist in catalog");
       }
-   }
-
-   public static void updateCatalog(GameRental esql,String authorisedUser) {}
-   public static void updateUser(GameRental esql, String authorisedUser) {
-      try {
-         String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
-         List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
-         String userRole = roleQuery.get(0).get(0);
-         System.out.println(userRole);
-         if (userRole.trim().equals("manager")) {
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("|                 o                 |");
-            System.out.println("=====================================");
-            System.out.println("|     Update a Customer's Profile   |");
-            System.out.println("=====================================");
-            System.out.println("|                                   |");
-            System.out.println("| 1.       Update login          |");
-            System.out.println("|                                   |");
-            System.out.println("| 2.      Update role       |");
-            System.out.println("|                                   |");
-            System.out.println("| 3.     Update number of overdue games      |");
-            System.out.println("|                                   |");
-            System.out.println("|-----------------------------------|");
-            // System.out.println("|      Please make your choice:     |");
-            switch(readChoice()) {
-               case 1: workerUpdateLogin(esql, authorisedUser); break;
-               case 2: workerUpdateRole(esql, authorisedUser); break;
-               case 3: updateOverdueGames(esql, authorisedUser); break;
-            }
-         }
-         else {
-            System.out.println("You do not have permissions to edit");
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      else if (userRole.trim().equals("manager")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|           Update a Game           |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update game name         |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update genre              |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update price               |");
+        System.out.println("|                                   |");
+        System.out.println("| 4.     Update description         |");
+        System.out.println("|                                   |");
+        System.out.println("| 5.     Update imageURL            |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+          case 1: updateGameName(esql, gameIdUpdate); break;
+          case 2: updateGenre(esql, gameIdUpdate); break;
+          case 3: updatePrice(esql, gameIdUpdate); break;
+          case 4: updateDescription(esql, gameIdUpdate); break;
+          case 5: updateImage(esql, gameIdUpdate); break;  
+        }
       }
-   }
+      else {
+        System.out.println("You do not have permissions to edit");
+      }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
 
-   public static void workerUpdateLogin(GameRental esql, String authorisedUser) {
-      try {
-        System.out.println("|Enter user you want to update login:");
-        String userUpdate = in.readLine();
+  public static void updateGameName(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new game name: ");
+      String newName = in.readLine();
 
-        System.out.println("|Enter the new login name:");
-        String newUserLogin = in.readLine();
+      String query = " UPDATE Catalog SET gameName = '" + newName + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
 
-        String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+  public static void updateGenre(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new cost: ");
+      String newGenre = in.readLine();
+
+      String query = " UPDATE Catalog SET genre = '" + newGenre + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updatePrice(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new price: ");
+      String newPrice = in.readLine();
+      Float costNum = Float.parseFloat(newPrice);
+      String query = " UPDATE Catalog SET price = '" + costNum + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updateDescription(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new description: ");
+      String newDescription = in.readLine();
+
+      String query = " UPDATE Catalog SET description = '" + newDescription + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+  public static void updateImage(GameRental esql, String gameIdUpdate) {
+    try {
+      System.out.println("Enter new image URL: ");
+      String newURL = in.readLine();
+
+      String query = " UPDATE Catalog SET imageURL = '" + newURL + "' WHERE gameID = '" + gameIdUpdate + "';";
+      esql.executeUpdate(query);
+    } catch(Exception e){
+      System.err.println (e.getMessage());
+    }
+  }
+
+  public static void updateUser(GameRental esql, String authorisedUser) {
+    try {
+      String query = "SELECT role FROM Users WHERE login = '" + authorisedUser + "';";
+      List<List<String>> roleQuery = esql.executeQueryAndReturnResult(query);
+      String userRole = roleQuery.get(0).get(0);
+      System.out.println(userRole);
+      if (userRole.trim().equals("manager")) {
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("|                 o                 |");
+        System.out.println("=====================================");
+        System.out.println("|     Update a Customer's Profile   |");
+        System.out.println("=====================================");
+        System.out.println("|                                   |");
+        System.out.println("| 1.       Update login          |");
+        System.out.println("|                                   |");
+        System.out.println("| 2.      Update role       |");
+        System.out.println("|                                   |");
+        System.out.println("| 3.     Update number of overdue games      |");
+        System.out.println("|                                   |");
+        System.out.println("|-----------------------------------|");
+        // System.out.println("|      Please make your choice:     |");
+        switch(readChoice()) {
+            case 1: workerUpdateLogin(esql, authorisedUser); break;
+            case 2: workerUpdateRole(esql, authorisedUser); break;
+            case 3: updateOverdueGames(esql, authorisedUser); break;
+        }
+      }
+      else {
+        System.out.println("You do not have permissions to edit");
+      }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+
+  public static void workerUpdateLogin(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update login:");
+      String userUpdate = in.readLine();
+
+      System.out.println("|Enter the new login name:");
+      String newUserLogin = in.readLine();
+
+      String newLoginQuery = "UPDATE Users SET login = '" + newUserLogin + "' WHERE login = '" + userUpdate + "';";
+      esql.executeUpdate(newLoginQuery);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
+
+  public static void workerUpdateRole(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update role:");
+      String userUpdate = in.readLine();
+
+      System.out.println("|Set user role to customer, employee, or manager:");
+      String newRole = in.readLine();
+      if (newRole.trim().equals("customer") || newRole.trim().equals("employee") || newRole.trim().equals("manager")) {
+        String newLoginQuery = "UPDATE Users SET role = '" + newRole + "' WHERE login = '" + userUpdate + "';";
         esql.executeUpdate(newLoginQuery);
-      }catch(Exception e){
-         System.err.println (e.getMessage());
       }
-   }
-
-   public static void workerUpdateRole(GameRental esql, String authorisedUser) {
-      try {
-         System.out.println("|Enter user you want to update role:");
-         String userUpdate = in.readLine();
-
-         System.out.println("|Set user role to customer, employee, or manager:");
-         String newRole = in.readLine();
-         if (newRole.trim().equals("customer") || newRole.trim().equals("employee") || newRole.trim().equals("manager")) {
-            String newLoginQuery = "UPDATE Users SET role = '" + newRole + "' WHERE login = '" + userUpdate + "';";
-            esql.executeUpdate(newLoginQuery);
-         }
-         else {
-            System.out.println("Invalid input. Press any key to return to the main menu.");
-            in.readLine();
-         }
-      }catch(Exception e){
-         System.err.println (e.getMessage());
+      else {
+        System.out.println("Invalid input. Press any key to return to the main menu.");
+        in.readLine();
       }
-   }
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }
+  }
 
-   public static void updateOverdueGames(GameRental esql, String authorisedUser) {
-      try {
-         System.out.println("|Enter user you want to update number of overdue games:");
-         String userUpdate = in.readLine();
+  public static void updateOverdueGames(GameRental esql, String authorisedUser) {
+    try {
+      System.out.println("|Enter user you want to update number of overdue games:");
+      String userUpdate = in.readLine();
 
-         System.out.println("|Enter number of overdue games:");
-         Integer newNumber = Integer.valueOf(in.readLine());
+      System.out.println("|Enter number of overdue games:");
+      Integer newNumber = Integer.valueOf(in.readLine());
 
-         String newLoginQuery = "UPDATE Users SET numOverdueGames = '" + newNumber + "' WHERE login = '" + userUpdate + "';";
-         esql.executeUpdate(newLoginQuery);
-
-      }catch(Exception e){
-         System.err.println (e.getMessage());
-      }   
-   }
+      String newLoginQuery = "UPDATE Users SET numOverdueGames = '" + newNumber + "' WHERE login = '" + userUpdate + "';";
+      esql.executeUpdate(newLoginQuery);
+    }catch(Exception e){
+        System.err.println (e.getMessage());
+    }   
+  }
 
 }//end GameRental
 
